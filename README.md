@@ -30,4 +30,4 @@ Then, apply the specific rules you want:
 
 # More information
 
-More details can be found under the [docs](./docs) folder, for each rule.
+More details can be found under the [docs](https://github.com/idan-at/eslint-plugin-package-json-dependencies/tree/master/docs) folder, for each rule.

@@ -11,6 +11,10 @@
   "files": [
     "dist"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:idan-at/eslint-plugin-package-json-dependencies.git"
+  },
   "keywords": [
     "eslint",
     "package-json",
@@ -24,6 +28,7 @@
     "@types/esprima": "~4.0.0",
     "@types/jest": "~26.0.0",
     "@types/lodash": "~4.14.0",
+    "@types/micromatch": "~4.0.0",
     "@types/node": "~15.6.0",
     "eslint": "~7.27.0",
     "esprima": "~4.0.0",
@@ -33,6 +38,7 @@
     "typescript": "~4.2.0"
   },
   "dependencies": {
-    "lodash": "~4.17.0"
+    "lodash": "~4.17.0",
+    "micromatch": "~4.0.0"
   }
 }

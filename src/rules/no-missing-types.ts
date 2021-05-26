@@ -7,9 +7,10 @@ import { hasTypes } from "../has-types";
 import { Rule } from "eslint";
 import { groupBy } from "lodash";
 import { Program, ExpressionStatement, ObjectExpression } from "estree";
+import micromatch from "micromatch";
 
 interface RuleOptions {
-  exclude: string[];
+  excludePatterns: string[];
 }
 
 const rule: Rule.RuleModule = {
@@ -29,7 +30,7 @@ const rule: Rule.RuleModule = {
       {
         type: "object",
         properties: {
-          exclude: {
+          excludePatterns: {
             type: "array",
             items: {
               type: "string",
@@ -62,9 +63,12 @@ const rule: Rule.RuleModule = {
           return;
         }
 
-        const { exclude = [] } = (context.options[0] || {}) as RuleOptions;
+        const { excludePatterns = [] } = (context.options[0] ||
+          {}) as RuleOptions;
 
-        const packageJsonAST = ((node as Program).body[0] as ExpressionStatement).expression as ObjectExpression;
+        const packageJsonAST = (
+          (node as Program).body[0] as ExpressionStatement
+        ).expression as ObjectExpression;
 
         const dependencies = [
           ...extractPropertyObjectExpression(packageJsonAST, "devDependencies"),
@@ -79,7 +83,7 @@ const rule: Rule.RuleModule = {
         );
 
         const codeDependencies = allCodeDependencies.filter(
-          (dependency) => !exclude.includes(dependency)
+          (dependency) => micromatch([dependency], excludePatterns).length === 0
         );
 
         for (const dependency of codeDependencies) {

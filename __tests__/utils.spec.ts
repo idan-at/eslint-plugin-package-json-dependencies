@@ -30,7 +30,8 @@ describe("utils", () => {
 
     expect(
       extractPropertyObjectExpression(
-        ((objectExpression.body[0] as ExpressionStatement).expression as ObjectExpression),
+        (objectExpression.body[0] as ExpressionStatement)
+          .expression as ObjectExpression,
         "property"
       )
     ).toStrictEqual(["foo"]);

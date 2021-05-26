@@ -6,4 +6,4 @@ For example, if `lodash` is installed, a package that doesn't have its own types
 If `axios` is installed, a package that contains its own types, nothing else needs to be installed.
 
 ## Options
-Sometimes you want to allow certain packages to be installed without having types, a custom jest-reporter is a great example. In this case, use the `exclude: string[]` option to make this rule ignore those packages and do not fail.
+Sometimes you want to allow certain packages to be installed without having types, a custom jest-reporter is a great example. In this case, use the `excludePatterns: string[]` option to make this rule ignore those packages and do not fail.

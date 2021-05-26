@@ -103,7 +103,7 @@ tester.run("no-missing-types", rule, {
     })
     `,
       filename: "package.json",
-      options: [{ exclude: ["package"] }],
+      options: [{ excludePatterns: ["pack*"] }],
     },
     // misses scoped @types but is excluded
     {
@@ -116,7 +116,7 @@ tester.run("no-missing-types", rule, {
     })
     `,
       filename: "package.json",
-      options: [{ exclude: ["@scope/package"] }],
+      options: [{ excludePatterns: ["@scope/package"] }],
     },
     // has dynamic types (relies on typescript being a dependency of this package)
     {

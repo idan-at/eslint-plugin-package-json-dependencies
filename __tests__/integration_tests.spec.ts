@@ -17,7 +17,7 @@ const createLiner = (cwd: string): ESLint =>
       rules: {
         "package-json-dependencies/no-missing-types": [
           "error",
-          { exclude: [] },
+          { excludePatterns: [] },
         ],
       },
     },
@@ -26,14 +26,14 @@ const createLiner = (cwd: string): ESLint =>
     useEslintrc: false,
   });
 
-describe.skip("integration tests", () => {
+describe("integration tests", () => {
   beforeAll(() =>
     execSync("npm install", {
       cwd: MISSING_TYPES_FIXTURE_PATH,
     })
   );
 
-  describe("no-missing-types", () => {
+  describe.skip("no-missing-types", () => {
     test("works with json files", async () => {
       const results = await createLiner(MISSING_TYPES_FIXTURE_PATH).lintFiles(
         "package.json"
