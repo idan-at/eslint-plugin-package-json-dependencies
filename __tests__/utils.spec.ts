@@ -2,7 +2,7 @@ import {
   isPackageJsonFile,
   isValidJsonAST,
   extractPropertyObjectExpression,
-} from "../../src/rules/utils";
+} from "../src/utils";
 import * as esprima from "esprima";
 import { Rule } from "eslint";
 

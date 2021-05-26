@@ -2,7 +2,7 @@ import {
   isPackageJsonFile,
   isValidJsonAST,
   extractPropertyObjectExpression,
-} from "./utils";
+} from "../utils";
 import { Rule } from "eslint";
 import { groupBy } from "lodash";
 
