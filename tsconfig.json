@@ -1,0 +1,18 @@
+{
+  "lib": ["es2020"],
+  "compilerOptions": {
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "strictFunctionTypes": true,
+    "declaration": true,
+    "sourceMap": true,
+    "composite": true,
+    "strictNullChecks": true,
+    "target": "es2020",
+    "types": ["node", "jest"],
+    "outDir": "dist"
+  },
+  "include": ["index.ts", "src/**/*"]
+}
