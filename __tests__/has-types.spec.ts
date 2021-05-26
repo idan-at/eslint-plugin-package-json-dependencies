@@ -17,7 +17,7 @@ describe("hasTypes", () => {
   test("dynamic checks", () => {
     expect(hasTypes(cwd, "typescript", [])).toBe(true);
     expect(hasTypes(cwd, "lodash", [])).toBe(false);
-    // expect(hasTypes(cwd, "made-up-package", [])).toBe(true);
+    expect(hasTypes(cwd, "made-up-package", [])).toBe(true);
   });
 });
 

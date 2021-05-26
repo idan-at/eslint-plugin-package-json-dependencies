@@ -1,14 +1,13 @@
-import { resolveTscOptions } from "../src/compiler-facade";
+import { resolveTypeRoots } from "../src/compiler-facade";
 import { FIXTURES_ROOT_PATH, MISSING_TYPES_FIXTURE_PATH } from "./constants";
 import path from "path";
 
 describe("compiler facade", () => {
-  test("resolveTscOptions", () => {
-    expect(resolveTscOptions(FIXTURES_ROOT_PATH)).toStrictEqual({});
-    expect(resolveTscOptions(MISSING_TYPES_FIXTURE_PATH)).toStrictEqual({
-      extendedSourceFiles: [
-        path.join(MISSING_TYPES_FIXTURE_PATH, "tsconfig.json"),
-      ],
-    });
+  test("resolveTypeRoots", () => {
+    expect(resolveTypeRoots(FIXTURES_ROOT_PATH)).toStrictEqual([]);
+    expect(resolveTypeRoots(MISSING_TYPES_FIXTURE_PATH)).toStrictEqual([
+      path.resolve(MISSING_TYPES_FIXTURE_PATH, "node_modules", "@types"),
+      path.resolve(MISSING_TYPES_FIXTURE_PATH, "typings"),
+    ]);
   });
 });
