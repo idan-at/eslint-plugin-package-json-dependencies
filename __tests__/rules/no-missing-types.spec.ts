@@ -108,15 +108,27 @@ tester.run("no-missing-types", rule, {
     // misses scoped @types but is excluded
     {
       code: `
-  ({
-    "name": "p1",
-    "devDependencies": {
-      "@scope/package": "~1.0.0"
-    }
-  })
-  `,
+    ({
+      "name": "p1",
+      "devDependencies": {
+        "@scope/package": "~1.0.0"
+      }
+    })
+    `,
       filename: "package.json",
       options: [{ exclude: ["@scope/package"] }],
+    },
+    // has dynamic types (relies on typescript being a dependency of this package)
+    {
+      code: `
+    ({
+      "name": "p1",
+      "devDependencies": {
+        "typescript": "~1.0.0"
+      }
+    })
+    `,
+      filename: "package.json",
     },
   ],
   invalid: [
