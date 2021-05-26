@@ -124,7 +124,7 @@ tester.run("no-missing-types", rule, {
     {
       code: `module.exports = {}`,
       filename: "package.json",
-      errors: [{ messageId: "invalidJson", }]
+      errors: [{ messageId: "invalidJson" }],
     },
   ],
 });

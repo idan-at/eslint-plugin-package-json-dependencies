@@ -1,5 +1,9 @@
-import { isPackageJsonFile, isValidJsonAST, extractPropertyObjectExpression } from "../../src/rules/utils";
-import * as esprima from 'esprima';
+import {
+  isPackageJsonFile,
+  isValidJsonAST,
+  extractPropertyObjectExpression,
+} from "../../src/rules/utils";
+import * as esprima from "esprima";
 import { Rule } from "eslint";
 
 describe("utils", () => {
@@ -11,15 +15,24 @@ describe("utils", () => {
 
   test("isValidJsonAST", () => {
     expect(isValidJsonAST({ type: "Literal" } as Rule.Node)).toBe(false);
-    expect(isValidJsonAST(esprima.parseScript("const x = 1") as Rule.Node)).toBe(false);
+    expect(
+      isValidJsonAST(esprima.parseScript("const x = 1") as Rule.Node)
+    ).toBe(false);
     expect(isValidJsonAST(esprima.parseScript("(1)") as Rule.Node)).toBe(false);
     expect(isValidJsonAST(esprima.parseScript("({})") as Rule.Node)).toBe(true);
   });
 
   test("extractPropertyObjectExpression", () => {
-    const objectExpression = esprima.parseScript("({'property': {'foo': 'bar', bar: []}})")
+    const objectExpression = esprima.parseScript(
+      "({'property': {'foo': 'bar', bar: []}})"
+    );
 
     // @ts-ignore
-    expect(extractPropertyObjectExpression(objectExpression.body[0].expression, "property")).toStrictEqual(["foo"]);
-  })
+    expect(
+      extractPropertyObjectExpression(
+        objectExpression.body[0].expression,
+        "property"
+      )
+    ).toStrictEqual(["foo"]);
+  });
 });

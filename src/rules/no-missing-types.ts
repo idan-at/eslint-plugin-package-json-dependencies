@@ -15,23 +15,23 @@ const hasTypesDependency = (
   typesDependencies: string[]
 ): boolean => {
   if (dependency.startsWith("@")) {
-    return typesDependencies.includes(`@types/${dependency.replace("@", "").replace("/", "__")}`)
+    return typesDependencies.includes(
+      `@types/${dependency.replace("@", "").replace("/", "__")}`
+    );
   } else {
     return typesDependencies.includes(`@types/${dependency}`);
   }
 };
 
-const hasTypes = (
-  dependency: string,
-  typesDependencies: string[]
-): boolean => hasTypesDependency(dependency, typesDependencies);
+const hasTypes = (dependency: string, typesDependencies: string[]): boolean =>
+  hasTypesDependency(dependency, typesDependencies);
 
 const rule: Rule.RuleModule = {
   meta: {
     type: "problem",
     messages: {
-      "invalidJson": "Package JSON is not a valid JSON file",
-      "missingTypes": "Missing types for {{ package }}",
+      invalidJson: "Package JSON is not a valid JSON file",
+      missingTypes: "Missing types for {{ package }}",
     },
     docs: {
       description: "detect missing @types dependencies",
@@ -88,15 +88,17 @@ const rule: Rule.RuleModule = {
             dependency.startsWith("@types/")
           );
 
-        for (const dependency of codeDependencies.filter(dependency => exclude.includes(dependency))) {
+        for (const dependency of codeDependencies.filter((dependency) =>
+          exclude.includes(dependency)
+        )) {
           if (!hasTypes(dependency, typesDependencies)) {
             context.report({
               node,
               messageId: "missingTypes",
               data: {
-                package: dependency
-              }
-            })
+                package: dependency,
+              },
+            });
           }
         }
       },

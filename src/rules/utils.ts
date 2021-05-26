@@ -43,8 +43,4 @@ const extractPropertyObjectExpression = (
   }, []);
 };
 
-export {
-  isPackageJsonFile,
-  isValidJsonAST,
-  extractPropertyObjectExpression,
-};
+export { isPackageJsonFile, isValidJsonAST, extractPropertyObjectExpression };
