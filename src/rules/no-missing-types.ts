@@ -3,28 +3,13 @@ import {
   isValidJsonAST,
   extractPropertyObjectExpression,
 } from "../utils";
+import { hasTypes } from "../has-types";
 import { Rule } from "eslint";
 import { groupBy } from "lodash";
 
 interface RuleOptions {
   exclude: string[];
 }
-
-const hasTypesDependency = (
-  dependency: string,
-  typesDependencies: string[]
-): boolean => {
-  if (dependency.startsWith("@")) {
-    return typesDependencies.includes(
-      `@types/${dependency.replace("@", "").replace("/", "__")}`
-    );
-  } else {
-    return typesDependencies.includes(`@types/${dependency}`);
-  }
-};
-
-const hasTypes = (dependency: string, typesDependencies: string[]): boolean =>
-  hasTypesDependency(dependency, typesDependencies);
 
 const rule: Rule.RuleModule = {
   meta: {
