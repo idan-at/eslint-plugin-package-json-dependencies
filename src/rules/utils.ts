@@ -1,11 +1,11 @@
 import path from "path";
 import { Rule } from "eslint";
-import { ObjectExpression, Expression, Literal } from "estree";
+import { ObjectExpression } from "estree";
 
 const isPackageJsonFile = (filePath: string): boolean =>
   path.basename(filePath) === "package.json";
 
-const isValidPackageJsonAST = (node: Rule.Node): boolean =>
+const isValidJsonAST = (node: Rule.Node): boolean =>
   node.type === "Program" &&
   node.body.length === 1 &&
   node.body[0].type === "ExpressionStatement" &&
@@ -45,6 +45,6 @@ const extractPropertyObjectExpression = (
 
 export {
   isPackageJsonFile,
-  isValidPackageJsonAST,
+  isValidJsonAST,
   extractPropertyObjectExpression,
 };

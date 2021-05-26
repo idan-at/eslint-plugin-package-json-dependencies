@@ -1,6 +1,6 @@
 import {
   isPackageJsonFile,
-  isValidPackageJsonAST,
+  isValidJsonAST,
   extractPropertyObjectExpression,
 } from "./utils";
 import { Rule } from "eslint";
@@ -63,7 +63,7 @@ const rule: Rule.RuleModule = {
           return;
         }
 
-        if (!isValidPackageJsonAST(node)) {
+        if (!isValidJsonAST(node)) {
           context.report({
             node,
             messageId: "invalidJson",
