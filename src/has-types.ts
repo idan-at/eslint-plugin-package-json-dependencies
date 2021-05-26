@@ -14,6 +14,10 @@ const hasTypesDependency = (
   }
 };
 
+// If it contains @types it means the package does not come packed with its own types.
+const isPackedTypesFile = (filename: string): boolean =>
+  !filename.includes("/@types/") && filename.endsWith(".d.ts");
+
 const hasPackedTypes = (cwd: string, dependency: string): boolean => {
   const fileExists = (fileName: string): boolean => ts.sys.fileExists(fileName);
   const readFile = (fileName: string): string | undefined =>
@@ -34,8 +38,9 @@ const hasPackedTypes = (cwd: string, dependency: string): boolean => {
     return false;
   }
 
-  // If it contains @types it means the package does not come packed with its own types.
-  return !resolvedModule.resolvedFileName.includes("/@types/");
+  const { resolvedFileName } = resolvedModule;
+
+  return isPackedTypesFile(resolvedFileName);
 };
 
 const hasTypes = (
@@ -46,4 +51,4 @@ const hasTypes = (
   hasTypesDependency(dependency, typesDependencies) ||
   hasPackedTypes(cwd, dependency);
 
-export { hasTypes };
+export { hasTypes, isPackedTypesFile };

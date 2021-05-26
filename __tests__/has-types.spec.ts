@@ -1,4 +1,4 @@
-import { hasTypes } from "../src/has-types";
+import { hasTypes, isPackedTypesFile } from "../src/has-types";
 
 describe("hasTypes", () => {
   const cwd = __dirname;
@@ -19,4 +19,10 @@ describe("hasTypes", () => {
     expect(hasTypes(cwd, "typescript", [])).toBe(true);
     expect(hasTypes(cwd, "lodash", [])).toBe(false);
   });
+});
+
+test("isPackedTypesFile", () => {
+  expect(isPackedTypesFile("/path/to/@types/package/index.d.ts")).toBe(false);
+  expect(isPackedTypesFile("/path/to/package/index.js")).toBe(false);
+  expect(isPackedTypesFile("/path/to/package/index.d.ts")).toBe(true);
 });
