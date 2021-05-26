@@ -22,7 +22,7 @@ const rule: Rule.RuleModule = {
       description: "detect missing @types dependencies",
       category: "Possible Errors",
       recommended: true,
-      url: "", // TODO
+      url: "https://github.com/idan-at/eslint-plugin-package-json-dependencies/blob/master/docs/rules/no-missing-types.md",
     },
     schema: [
       {
