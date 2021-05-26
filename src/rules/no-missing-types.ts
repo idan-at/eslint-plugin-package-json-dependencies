@@ -44,6 +44,10 @@ const rule: Rule.RuleModule = {
       "Program:exit": (node: Rule.Node) => {
         const filePath = context.getFilename();
 
+        // TODO: Remove ts-ignore after updating eslint types (https://github.com/DefinitelyTyped/DefinitelyTyped/pull/53408)
+        // @ts-ignore
+        const cwd = context.getCwd();
+
         if (!isPackageJsonFile(filePath)) {
           return;
         }
@@ -79,7 +83,7 @@ const rule: Rule.RuleModule = {
         );
 
         for (const dependency of codeDependencies) {
-          if (!hasTypes(dependency, typesDependencies)) {
+          if (!hasTypes(cwd, dependency, typesDependencies)) {
             context.report({
               node,
               messageId: "missingTypes",
