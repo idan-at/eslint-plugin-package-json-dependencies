@@ -1,5 +1,4 @@
-import * as ts from "typescript";
-import path from "path";
+import { resolveModuleName } from "./compiler-facade";
 
 const hasTypesDependency = (
   dependency: string,
@@ -19,28 +18,9 @@ const isPackedTypesFile = (filename: string): boolean =>
   !filename.includes("/@types/") && filename.endsWith(".d.ts");
 
 const hasPackedTypes = (cwd: string, dependency: string): boolean => {
-  const fileExists = (fileName: string): boolean => ts.sys.fileExists(fileName);
-  const readFile = (fileName: string): string | undefined =>
-    ts.sys.readFile(fileName);
-  const options: ts.CompilerOptions = { module: ts.ModuleKind.CommonJS };
+  const resolvedFileName = resolveModuleName(cwd, dependency);
 
-  // File doesn't have to exist, resolveModuleName needs a file inside CWD.
-  const fileInsideCwd = path.join(cwd, "index.ts");
-
-  const { resolvedModule } = ts.resolveModuleName(
-    dependency,
-    fileInsideCwd,
-    options,
-    { fileExists, readFile }
-  );
-
-  if (!resolvedModule) {
-    return false;
-  }
-
-  const { resolvedFileName } = resolvedModule;
-
-  return isPackedTypesFile(resolvedFileName);
+  return !!resolvedFileName && isPackedTypesFile(resolvedFileName);
 };
 
 const hasTypes = (

@@ -1,13 +1,7 @@
-import { ESLint, CLIEngine } from "eslint";
+import { ESLint } from "eslint";
 import { execSync } from "child_process";
-import path from "path";
 import * as plugin from "..";
-
-const FIXTURES_ROOT_PATH = path.resolve("./__tests__/fixtures");
-const MISSING_TYPES_FIXTURE_PATH = path.join(
-  FIXTURES_ROOT_PATH,
-  "missing-types"
-);
+import { MISSING_TYPES_FIXTURE_PATH } from "./constants";
 
 const createLiner = (cwd: string): ESLint =>
   new ESLint({

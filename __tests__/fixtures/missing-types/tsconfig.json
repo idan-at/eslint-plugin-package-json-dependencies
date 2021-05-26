@@ -1,0 +1,9 @@
+{
+  // This is a comment to make sure tsconfig.json files with comments are loaded successfully.
+  "compilerOptions": {
+    "typeRoots": [
+      "./node_modules/@types",
+      "./typings"
+    ]
+  }
+}
