@@ -27,9 +27,9 @@ describe("utils", () => {
       "({'property': {'foo': 'bar', bar: []}})"
     );
 
-    // @ts-ignore
     expect(
       extractPropertyObjectExpression(
+        // @ts-ignore
         objectExpression.body[0].expression,
         "property"
       )

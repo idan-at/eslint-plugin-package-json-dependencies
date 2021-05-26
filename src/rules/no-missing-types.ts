@@ -72,8 +72,7 @@ const rule: Rule.RuleModule = {
           return;
         }
 
-        const options: unknown = context.options;
-        const { exclude = [] } = options as RuleOptions;
+        const { exclude = [] } = (context.options[0] || {}) as RuleOptions;
 
         // @ts-ignore
         const packageJsonAST = node.body[0].expression;
@@ -83,14 +82,18 @@ const rule: Rule.RuleModule = {
           ...extractPropertyObjectExpression(packageJsonAST, "dependencies"),
         ];
 
-        const { true: typesDependencies = [], false: codeDependencies = [] } =
-          groupBy(dependencies, (dependency) =>
-            dependency.startsWith("@types/")
-          );
+        const {
+          true: typesDependencies = [],
+          false: allCodeDependencies = [],
+        } = groupBy(dependencies, (dependency) =>
+          dependency.startsWith("@types/")
+        );
 
-        for (const dependency of codeDependencies.filter((dependency) =>
-          exclude.includes(dependency)
-        )) {
+        const codeDependencies = allCodeDependencies.filter(
+          (dependency) => !exclude.includes(dependency)
+        );
+
+        for (const dependency of codeDependencies) {
           if (!hasTypes(dependency, typesDependencies)) {
             context.report({
               node,

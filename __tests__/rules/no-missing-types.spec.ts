@@ -126,5 +126,61 @@ tester.run("no-missing-types", rule, {
       filename: "package.json",
       errors: [{ messageId: "invalidJson" }],
     },
+    // missing types for a dependency
+    {
+      code: `
+      ({
+        "name": "p1",
+        "dependencies": {
+          "package": "~1.0.0",
+        }
+      })
+      `,
+      filename: "package.json",
+      errors: [{ messageId: "missingTypes", data: { package: "package" } }],
+    },
+    // missing types for a scoped dependency
+    {
+      code: `
+      ({
+        "name": "p1",
+        "dependencies": {
+          "@scope/package": "~1.0.0",
+        }
+      })
+      `,
+      filename: "package.json",
+      errors: [
+        { messageId: "missingTypes", data: { package: "@scope/package" } },
+      ],
+    },
+    // missing types for a dev dependency
+    {
+      code: `
+    ({
+      "name": "p1",
+      "devDependencies": {
+        "package": "~1.0.0",
+      }
+    })
+    `,
+      filename: "package.json",
+      errors: [{ messageId: "missingTypes", data: { package: "package" } }],
+    },
+    // missing types for a scoped dev dependency
+    {
+      code: `
+      ({
+        "name": "p1",
+        "devDependencies": {
+          "@scope/package": "~1.0.0",
+        }
+      })
+      `,
+      filename: "package.json",
+      errors: [
+        { messageId: "missingTypes", data: { package: "@scope/package" } },
+      ],
+    },
   ],
 });
