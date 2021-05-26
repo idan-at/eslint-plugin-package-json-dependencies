@@ -6,6 +6,7 @@ import {
 import { hasTypes } from "../has-types";
 import { Rule } from "eslint";
 import { groupBy } from "lodash";
+import { Program, ExpressionStatement, ObjectExpression } from "estree";
 
 interface RuleOptions {
   exclude: string[];
@@ -63,8 +64,7 @@ const rule: Rule.RuleModule = {
 
         const { exclude = [] } = (context.options[0] || {}) as RuleOptions;
 
-        // @ts-ignore
-        const packageJsonAST = node.body[0].expression;
+        const packageJsonAST = ((node as Program).body[0] as ExpressionStatement).expression as ObjectExpression;
 
         const dependencies = [
           ...extractPropertyObjectExpression(packageJsonAST, "devDependencies"),

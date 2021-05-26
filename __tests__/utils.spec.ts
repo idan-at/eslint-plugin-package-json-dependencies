@@ -5,6 +5,7 @@ import {
 } from "../src/utils";
 import * as esprima from "esprima";
 import { Rule } from "eslint";
+import { ExpressionStatement, ObjectExpression } from "estree";
 
 describe("utils", () => {
   test("isPackageJsonFile", () => {
@@ -29,8 +30,7 @@ describe("utils", () => {
 
     expect(
       extractPropertyObjectExpression(
-        // @ts-ignore
-        objectExpression.body[0].expression,
+        ((objectExpression.body[0] as ExpressionStatement).expression as ObjectExpression),
         "property"
       )
     ).toStrictEqual(["foo"]);
