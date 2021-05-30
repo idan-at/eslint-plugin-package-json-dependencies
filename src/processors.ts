@@ -1,17 +1,15 @@
 import { Linter } from "eslint";
+import { jsonToJs, fixRange } from "./json-to-js";
 
 const processors = {
   ".json": {
-    preprocess: (source: string): string[] => [`(${source})`],
+    preprocess: (source: string): string[] => [jsonToJs(source)],
     postprocess: (
       messagesLists: Linter.LintMessage[][]
     ): Linter.LintMessage[] =>
       messagesLists.flat().map((message) => {
         if (message.fix) {
-          message.fix.range = [
-            message.fix.range[0] - 1,
-            message.fix.range[1] - 1,
-          ];
+          message.fix.range = fixRange(message.fix.range);
         }
 
         return message;

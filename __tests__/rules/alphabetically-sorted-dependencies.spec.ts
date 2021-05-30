@@ -13,111 +13,111 @@ tester.run("alphabetically-sorted-dependencies", rule, {
     },
     // sorted dependencies
     {
-      code: `({
+      code: `module.exports = {
         "dependencies": {
           "@scope/a": "~1.0.0",
           "@scope/b": "~1.0.0",
           "a": "~1.0.0",
           "b": "~1.0.0"
         }
-      })`,
+      }`,
       filename: "package.json",
     },
     // sorted dev dependencies
     {
-      code: `({
+      code: `module.exports = {
           "devDependencies": {
             "@scope/a": "~1.0.0",
             "@scope/b": "~1.0.0",
             "a": "~1.0.0",
             "b": "~1.0.0"
           }
-        })`,
+        }`,
       filename: "package.json",
     },
     // sorted peer dependencies
     {
-      code: `({
+      code: `module.exports = {
         "peerDependencies": {
           "@scope/a": "~1.0.0",
           "@scope/b": "~1.0.0",
           "a": "~1.0.0",
           "b": "~1.0.0"
         }
-      })`,
+      }`,
       filename: "package.json",
     },
     // sorted optional dependencies
     {
-      code: `({
+      code: `module.exports = {
           "optionalDependencies": {
             "@scope/a": "~1.0.0",
             "@scope/b": "~1.0.0",
             "a": "~1.0.0",
             "b": "~1.0.0"
           }
-        })`,
+        }`,
       filename: "package.json",
     },
   ],
   invalid: [
     // invalid package.json file
     {
-      code: `module.exports = {}`,
+      code: `var x = 1;`,
       filename: "package.json",
       errors: [{ messageId: "invalidJson" }],
     },
     // unsorted dependencies
     {
-      code: dedent`({
+      code: dedent`module.exports = {
         "name": "p1",
         "dependencies": {
           "a": "~1.0.0",
           "@scope/a": "~1.0.0"
         }
-      })`,
+      }`,
       filename: "package.json",
       errors: [
         { messageId: "unsortedDependencies", data: { key: "dependencies" } },
       ],
-      output: dedent`({
+      output: dedent`module.exports = {
         "name": "p1",
         "dependencies": {
           "@scope/a": "~1.0.0",
           "a": "~1.0.0"
         }
-      })`,
+      }`,
     },
     // unsorted dev dependencies
     {
-      code: dedent`({
+      code: dedent`module.exports = {
         "name": "p1",
         "devDependencies": {
           "a": "~1.0.0",
           "@scope/a": "~1.0.0"
         }
-      })`,
+      }`,
       filename: "package.json",
       errors: [
         { messageId: "unsortedDependencies", data: { key: "devDependencies" } },
       ],
-      output: dedent`({
+      output: dedent`module.exports = {
         "name": "p1",
         "devDependencies": {
           "@scope/a": "~1.0.0",
           "a": "~1.0.0"
         }
-      })`,
+      }`,
     },
     // unsorted peer dependencies
     {
-      code: dedent`({
+      code: dedent`module.exports = {
         "name": "p1",
         "peerDependencies": {
           "a": "~1.0.0",
           "@scope/a": "~1.0.0"
         }
-      })`,
+      }`,
       filename: "package.json",
       errors: [
         {
@@ -125,23 +125,23 @@ tester.run("alphabetically-sorted-dependencies", rule, {
           data: { key: "peerDependencies" },
         },
       ],
-      output: dedent`({
+      output: dedent`module.exports = {
         "name": "p1",
         "peerDependencies": {
           "@scope/a": "~1.0.0",
           "a": "~1.0.0"
         }
-      })`,
+      }`,
     },
     // unsorted optional dependencies
     {
-      code: dedent`({
+      code: dedent`module.exports = {
         "name": "p1",
         "optionalDependencies": {
           "a": "~1.0.0",
           "@scope/a": "~1.0.0"
         }
-      })`,
+      }`,
       filename: "package.json",
       errors: [
         {
@@ -149,17 +149,17 @@ tester.run("alphabetically-sorted-dependencies", rule, {
           data: { key: "optionalDependencies" },
         },
       ],
-      output: dedent`({
+      output: dedent`module.exports = {
         "name": "p1",
         "optionalDependencies": {
           "@scope/a": "~1.0.0",
           "a": "~1.0.0"
         }
-      })`,
+      }`,
     },
     // unsorted dev dependencies but sorted dependencies
     {
-      code: dedent`({
+      code: dedent`module.exports = {
           "name": "p1",
           "dependencies": {
             "a": "~1.0.0",
@@ -169,12 +169,12 @@ tester.run("alphabetically-sorted-dependencies", rule, {
             "a": "~1.0.0",
             "@scope/a": "~1.0.0"
           }
-        })`,
+        }`,
       filename: "package.json",
       errors: [
         { messageId: "unsortedDependencies", data: { key: "devDependencies" } },
       ],
-      output: dedent`({
+      output: dedent`module.exports = {
         "name": "p1",
         "dependencies": {
           "a": "~1.0.0",
@@ -184,7 +184,7 @@ tester.run("alphabetically-sorted-dependencies", rule, {
           "@scope/a": "~1.0.0",
           "a": "~1.0.0"
         }
-      })`,
+      }`,
     },
   ],
 });

@@ -1,6 +1,7 @@
 import { isPackageJsonFile, isValidJson, getDependenciesSafe } from "../utils";
 import { Rule } from "eslint";
 import _ from "lodash";
+import { jsToJson } from "../json-to-js";
 
 const DEPENDENCIES_KEYS = [
   "dependencies",
@@ -43,7 +44,7 @@ const rule: Rule.RuleModule = {
         }
 
         const processedSource = context.getSourceCode().text;
-        const text = processedSource.substring(1, processedSource.length - 1);
+        const text = jsToJson(processedSource);
 
         if (!isValidJson(text)) {
           context.report({

@@ -1,5 +1,6 @@
 import { isPackageJsonFile, isValidJson, getDependenciesSafe } from "../utils";
 import { hasTypes } from "../has-types";
+import { jsToJson } from "../json-to-js";
 import { Rule } from "eslint";
 import { groupBy } from "lodash";
 import micromatch from "micromatch";
@@ -46,7 +47,7 @@ const rule: Rule.RuleModule = {
 
         const cwd = context.getCwd();
         const processedSource = context.getSourceCode().text;
-        const text = processedSource.substring(1, processedSource.length - 1);
+        const text = jsToJson(processedSource);
 
         if (!isValidJson(text)) {
           context.report({

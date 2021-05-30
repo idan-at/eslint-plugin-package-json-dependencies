@@ -12,18 +12,20 @@ describe("processors", () => {
     test("preprocess", () => {
       const source = chance.word();
 
-      expect(processor.preprocess(source)).toStrictEqual([`(${source})`]);
+      expect(processor.preprocess(source)).toStrictEqual([
+        `module.exports = ${source}`,
+      ]);
     });
 
     test("postprocess", () => {
       const error = mock<Linter.LintMessage>({
-        fix: { range: [10, 20] },
+        fix: { range: [50, 80] },
       });
 
       const processed = processor.postprocess([[error]]);
 
       expect(processed).toHaveLength(1);
-      expect(processed[0]).toHaveProperty("fix.range", [9, 19]);
+      expect(processed[0]).toHaveProperty("fix.range", [33, 63]);
     });
   });
 });
