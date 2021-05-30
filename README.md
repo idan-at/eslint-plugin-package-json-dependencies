@@ -32,6 +32,7 @@ Then, apply the specific rules you want:
 }
 ```
 
-# More information
+# Available Rules
 
-More details can be found under the [docs](https://github.com/idan-at/eslint-plugin-package-json-dependencies/tree/master/docs) folder, for each rule.
+- [no-missing-types](https://github.com/idan-at/eslint-plugin-package-json-dependencies/blob/master/docs/rules/no-missing-types.md)
+- [alphabetically-sorted-dependencies](https://github.com/idan-at/eslint-plugin-package-json-dependencies/blob/master/docs/rules/alphabetically-sorted-dependencies.md)
