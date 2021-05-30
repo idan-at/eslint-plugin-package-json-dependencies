@@ -1,5 +1,2 @@
 __tests__/fixtures/
 dist/
-tsconfig.json
-package-lock.json
-.eslintrc.json

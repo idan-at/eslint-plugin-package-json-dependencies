@@ -12,8 +12,7 @@ describe("processors", () => {
     test("preprocess", () => {
       const source = chance.word();
 
-      expect(processor.preprocess(source, "package.json")).toStrictEqual([`(${source})`]);
-      expect(processor.preprocess(source, "not-package.json")).toStrictEqual([source]);
+      expect(processor.preprocess(source)).toStrictEqual([`(${source})`]);
     });
 
     test("postprocess", () => {
