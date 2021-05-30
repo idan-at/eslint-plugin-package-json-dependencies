@@ -30,6 +30,16 @@ describe("integration tests", () => {
     })
   );
 
+  test("exposes a json processor", () => {
+    expect(plugin.processors).toMatchObject({
+      ".json": {
+        preprocess: expect.any(Function),
+        postprocess: expect.any(Function),
+        supportsAutofix: true,
+      },
+    });
+  });
+
   describe.skip("no-missing-types", () => {
     test("works with json files", async () => {
       const results = await createLiner(

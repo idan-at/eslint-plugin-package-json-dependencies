@@ -1,15 +1,13 @@
 import { isPackageJsonFile } from "./utils";
-
-type PostProcessMessage = { ruleId: string };
+import { Linter } from "eslint";
 
 const processors = {
   ".json": {
     preprocess: (source: string, filename: string): string[] =>
       isPackageJsonFile(filename) ? [`(${source})`] : [source],
-    postprocess: (messages: PostProcessMessage[][]) =>
-      messages[0].filter((message) =>
-        message.ruleId.startsWith("package-json-dependencies/")
-      ),
+    postprocess: (
+      messagesLists: Linter.LintMessage[][]
+    ): Linter.LintMessage[] => messagesLists.flat(),
     supportsAutofix: true,
   },
 };
