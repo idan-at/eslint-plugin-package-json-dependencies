@@ -16,9 +16,14 @@ describe("processors", () => {
     });
 
     test("postprocess", () => {
-      const error = mock<Linter.LintMessage>();
+      const error = mock<Linter.LintMessage>({
+        fix: { range: [10, 20] },
+      });
 
-      expect(processor.postprocess([[error]])).toStrictEqual([error]);
+      const processed = processor.postprocess([[error]]);
+
+      expect(processed).toHaveLength(1);
+      expect(processed[0]).toHaveProperty("fix.range", [9, 19]);
     });
   });
 });
