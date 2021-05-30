@@ -43,7 +43,7 @@ const rule: Rule.RuleModule = {
           return;
         }
 
-        const processedSource = context.getSourceCode().text;
+        const { text: processedSource } = context.getSourceCode();
         const text = jsToJson(processedSource);
 
         if (!isValidJson(text)) {

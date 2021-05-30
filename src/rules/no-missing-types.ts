@@ -46,8 +46,7 @@ const rule: Rule.RuleModule = {
         }
 
         const cwd = context.getCwd();
-        const processedSource = context.getSourceCode().text;
-        const text = jsToJson(processedSource);
+        const text = jsToJson(context.getSourceCode().text);
 
         if (!isValidJson(text)) {
           context.report({
