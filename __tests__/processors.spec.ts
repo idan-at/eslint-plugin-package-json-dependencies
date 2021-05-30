@@ -1,5 +1,7 @@
 import { processors } from "../src/processors"
 import { Chance } from "chance";
+import { Linter } from "eslint";
+import { mock } from "jest-mock-extended";
 
 const chance = new Chance();
 
@@ -15,7 +17,7 @@ describe("processors", () => {
     });
 
     test("postprocess", () => {
-      const error = chance.word();
+      const error = mock<Linter.LintMessage>();
 
       expect(processor.postprocess([[error]])).toStrictEqual([error]);
     })
