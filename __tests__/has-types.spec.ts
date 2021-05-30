@@ -1,5 +1,5 @@
 import { hasTypes, isPackedTypesFile } from "../src/has-types";
-import { MISSING_TYPES_FIXTURE_PATH as cwd } from "./constants";
+import { NO_MISSING_TYPES_FIXTURE_PATH as cwd } from "./constants";
 
 describe("hasTypes", () => {
   test("static checks", () => {

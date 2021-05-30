@@ -1,7 +1,7 @@
 import { ESLint } from "eslint";
 import { execSync } from "child_process";
 import * as plugin from "..";
-import { MISSING_TYPES_FIXTURE_PATH } from "./constants";
+import { NO_MISSING_TYPES_FIXTURE_PATH, ALPHABETICALLY_SORTED_DEPENDENCIES_FIXTURES_PATH } from "./constants";
 
 const createLiner = (cwd: string): ESLint =>
   new ESLint({
@@ -23,13 +23,23 @@ const createLiner = (cwd: string): ESLint =>
 describe("integration tests", () => {
   beforeAll(() =>
     execSync("npm install", {
-      cwd: MISSING_TYPES_FIXTURE_PATH,
+      cwd: NO_MISSING_TYPES_FIXTURE_PATH,
     })
   );
 
   describe.skip("no-missing-types", () => {
     test("works with json files", async () => {
-      const results = await createLiner(MISSING_TYPES_FIXTURE_PATH).lintFiles(
+      const results = await createLiner(NO_MISSING_TYPES_FIXTURE_PATH).lintFiles(
+        "package.json"
+      );
+
+      console.log(results[0]);
+    });
+  });
+
+  describe.skip("alphabetically-sorted-dependencies", () => {
+    test("works with json files", async () => {
+      const results = await createLiner(ALPHABETICALLY_SORTED_DEPENDENCIES_FIXTURES_PATH).lintFiles(
         "package.json"
       );
 

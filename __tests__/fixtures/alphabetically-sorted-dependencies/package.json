@@ -1,0 +1,9 @@
+{
+  "name": "alphabetically-sorted-dependencies",
+  "description": "alphabetically-sorted-dependencies fixture",
+  "license": "ISC",
+  "dependencies": {
+    "b": "~4.17.0",
+    "a": "~0.1.0"
+  }
+}

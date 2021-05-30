@@ -1,6 +1,6 @@
 {
-  "name": "missing-types",
-  "description": "missing types fixture",
+  "name": "no-missing-types",
+  "description": "no-missing-types fixture",
   "license": "ISC",
   "dependencies": {
     "lodash": "~4.17.0",
