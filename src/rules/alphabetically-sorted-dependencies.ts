@@ -67,9 +67,9 @@ const rule: Rule.RuleModule = {
                 key,
               },
               fix: (fixer: Rule.RuleFixer) => {
-                const keyIndex = processedSource.indexOf(key);
-                const rangeStart = processedSource.indexOf("{", keyIndex);
-                const rangeEnd = processedSource.indexOf("}", keyIndex) + 1;
+                const keyIndex = processedSource.indexOf(`"${key}":`);
+                const rangeStart = processedSource.indexOf("{", keyIndex) - 1;
+                const rangeEnd = processedSource.indexOf("}", keyIndex);
 
                 const fixedSourceWithoutIndentation = JSON.stringify(
                   sortObjectKeysAlphabetically(packageJson[key]),
