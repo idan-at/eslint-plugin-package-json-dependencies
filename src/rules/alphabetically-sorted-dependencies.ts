@@ -12,6 +12,10 @@ const DEPENDENCIES_KEYS = [
 const isSorted = (list: string[]): boolean =>
   list.slice(1).every((item, i) => list[i] <= item);
 
+const sortObjectKeysAlphabetically = (
+  obj: Record<string, string>
+): Record<string, string> => _(obj).toPairs().sortBy(0).fromPairs().value();
+
 const rule: Rule.RuleModule = {
   meta: {
     type: "problem",
@@ -62,9 +66,26 @@ const rule: Rule.RuleModule = {
               data: {
                 key,
               },
-              // fix: (fixer: Rule.RuleFixer) => {
+              fix: (fixer: Rule.RuleFixer) => {
+                const keyIndex = processedSource.indexOf(key);
+                const rangeStart = processedSource.indexOf("{", keyIndex);
+                const rangeEnd = processedSource.indexOf("}", keyIndex) + 1;
 
-              // }
+                const fixedSourceWithoutIndentation = JSON.stringify(
+                  sortObjectKeysAlphabetically(packageJson[key]),
+                  null,
+                  2
+                );
+                const fixedSource = fixedSourceWithoutIndentation
+                  .split("\n")
+                  .map((line, idx) => (idx === 0 ? line : `  ${line}`))
+                  .join("\n");
+
+                return fixer.replaceTextRange(
+                  [rangeStart, rangeEnd],
+                  fixedSource
+                );
+              },
             });
           }
         });

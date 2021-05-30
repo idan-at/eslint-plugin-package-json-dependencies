@@ -1,5 +1,6 @@
 import { RuleTester } from "eslint";
 import { rule } from "../../src/rules/alphabetically-sorted-dependencies";
+import dedent from "dedent";
 
 const tester = new RuleTester();
 
@@ -68,7 +69,7 @@ tester.run("alphabetically-sorted-dependencies", rule, {
     },
     // unsorted dependencies
     {
-      code: `({
+      code: dedent`({
         "name": "p1",
         "dependencies": {
           "a": "~1.0.0",
@@ -79,10 +80,17 @@ tester.run("alphabetically-sorted-dependencies", rule, {
       errors: [
         { messageId: "unsortedDependencies", data: { key: "dependencies" } },
       ],
+      output: dedent`({
+        "name": "p1",
+        "dependencies": {
+          "@scope/a": "~1.0.0",
+          "a": "~1.0.0"
+        }
+      })`,
     },
     // unsorted dev dependencies
     {
-      code: `({
+      code: dedent`({
         "name": "p1",
         "devDependencies": {
           "a": "~1.0.0",
@@ -93,10 +101,17 @@ tester.run("alphabetically-sorted-dependencies", rule, {
       errors: [
         { messageId: "unsortedDependencies", data: { key: "devDependencies" } },
       ],
+      output: dedent`({
+        "name": "p1",
+        "devDependencies": {
+          "@scope/a": "~1.0.0",
+          "a": "~1.0.0"
+        }
+      })`,
     },
     // unsorted peer dependencies
     {
-      code: `({
+      code: dedent`({
         "name": "p1",
         "peerDependencies": {
           "a": "~1.0.0",
@@ -110,10 +125,17 @@ tester.run("alphabetically-sorted-dependencies", rule, {
           data: { key: "peerDependencies" },
         },
       ],
+      output: dedent`({
+        "name": "p1",
+        "peerDependencies": {
+          "@scope/a": "~1.0.0",
+          "a": "~1.0.0"
+        }
+      })`,
     },
     // unsorted optional dependencies
     {
-      code: `({
+      code: dedent`({
         "name": "p1",
         "optionalDependencies": {
           "a": "~1.0.0",
@@ -127,10 +149,17 @@ tester.run("alphabetically-sorted-dependencies", rule, {
           data: { key: "optionalDependencies" },
         },
       ],
+      output: dedent`({
+        "name": "p1",
+        "optionalDependencies": {
+          "@scope/a": "~1.0.0",
+          "a": "~1.0.0"
+        }
+      })`,
     },
     // unsorted dev dependencies but sorted dependencies
     {
-      code: `({
+      code: dedent`({
           "name": "p1",
           "dependencies": {
             "a": "~1.0.0",
@@ -145,6 +174,17 @@ tester.run("alphabetically-sorted-dependencies", rule, {
       errors: [
         { messageId: "unsortedDependencies", data: { key: "devDependencies" } },
       ],
+      output: dedent`({
+        "name": "p1",
+        "dependencies": {
+          "a": "~1.0.0",
+          "b": "~1.0.0"
+        },
+        "devDependencies": {
+          "@scope/a": "~1.0.0",
+          "a": "~1.0.0"
+        }
+      })`,
     },
   ],
 });

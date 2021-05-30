@@ -7,10 +7,10 @@ const processors = {
     preprocess: (source: string, filename: string): string[] =>
       isPackageJsonFile(filename) ? [`(${source})`] : [source],
     postprocess: (messages: PostProcessMessage[][]) =>
-      messages[0].filter(
-        (message) =>
-          message.ruleId.startsWith("package-json-dependencies/")
+      messages[0].filter((message) =>
+        message.ruleId.startsWith("package-json-dependencies/")
       ),
+    supportsAutofix: true,
   },
 };
 
