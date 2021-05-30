@@ -8,7 +8,7 @@
     "pretest": "npm run build",
     "test": "jest",
     "posttest": "npm run lint",
-    "lint": "npx eslint . --ext json"
+    "lint": "eslint . --ext json"
   },
   "files": [
     "dist"
