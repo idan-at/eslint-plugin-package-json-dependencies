@@ -1,12 +1,7 @@
 import { RuleTester } from "eslint";
 import { rule } from "../../src/rules/alphabetically-sorted-dependencies";
 
-const tester = new RuleTester({
-  overrides: [{
-    files: ["*.json"],
-    processor: 'package-json-dependencies/.json',
-  }]
-});
+const tester = new RuleTester();
 
 tester.run("alphabetically-sorted-dependencies", rule, {
   valid: [
