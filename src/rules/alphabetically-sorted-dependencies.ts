@@ -1,11 +1,6 @@
-import {
-  isPackageJsonFile,
-  isValidJsonAST,
-  extractPropertyObjectExpression,
-} from "../utils";
+import { isPackageJsonFile, isValidJson, getDependenciesSafe } from "../utils";
 import { Rule } from "eslint";
 import _ from "lodash";
-import { Program, ExpressionStatement, ObjectExpression } from "estree";
 
 const DEPENDENCIES_KEYS = [
   "dependencies",
@@ -32,6 +27,7 @@ const rule: Rule.RuleModule = {
       url: "https://github.com/idan-at/eslint-plugin-package-json-dependencies/blob/master/docs/rules/alphabetically-sorted-dependencies.md",
     },
     schema: [],
+    fixable: "code",
   },
   create: function (context: Rule.RuleContext): Rule.RuleListener {
     return {
@@ -42,7 +38,10 @@ const rule: Rule.RuleModule = {
           return;
         }
 
-        if (!isValidJsonAST(node)) {
+        const processedSource = context.getSourceCode().text;
+        const text = processedSource.substring(1, processedSource.length - 1);
+
+        if (!isValidJson(text)) {
           context.report({
             node,
             messageId: "invalidJson",
@@ -51,15 +50,10 @@ const rule: Rule.RuleModule = {
           return;
         }
 
-        const packageJsonAST = (
-          (node as Program).body[0] as ExpressionStatement
-        ).expression as ObjectExpression;
+        const packageJson = JSON.parse(text);
 
         DEPENDENCIES_KEYS.forEach((key) => {
-          const dependenciesList = extractPropertyObjectExpression(
-            packageJsonAST,
-            key
-          );
+          const dependenciesList = getDependenciesSafe(packageJson, key);
 
           if (!isSorted(dependenciesList)) {
             context.report({
@@ -68,6 +62,9 @@ const rule: Rule.RuleModule = {
               data: {
                 key,
               },
+              // fix: (fixer: Rule.RuleFixer) => {
+
+              // }
             });
           }
         });

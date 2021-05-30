@@ -1,7 +1,12 @@
 import { RuleTester } from "eslint";
 import { rule } from "../../src/rules/alphabetically-sorted-dependencies";
 
-const tester = new RuleTester();
+const tester = new RuleTester({
+  overrides: [{
+    files: ["*.json"],
+    processor: 'package-json-dependencies/.json',
+  }]
+});
 
 tester.run("alphabetically-sorted-dependencies", rule, {
   valid: [
@@ -68,15 +73,13 @@ tester.run("alphabetically-sorted-dependencies", rule, {
     },
     // unsorted dependencies
     {
-      code: `
-      ({
+      code: `({
         "name": "p1",
         "dependencies": {
           "a": "~1.0.0",
           "@scope/a": "~1.0.0"
         }
-      })
-      `,
+      })`,
       filename: "package.json",
       errors: [
         { messageId: "unsortedDependencies", data: { key: "dependencies" } },
@@ -84,15 +87,13 @@ tester.run("alphabetically-sorted-dependencies", rule, {
     },
     // unsorted dev dependencies
     {
-      code: `
-      ({
+      code: `({
         "name": "p1",
         "devDependencies": {
           "a": "~1.0.0",
           "@scope/a": "~1.0.0"
         }
-      })
-      `,
+      })`,
       filename: "package.json",
       errors: [
         { messageId: "unsortedDependencies", data: { key: "devDependencies" } },
@@ -100,15 +101,13 @@ tester.run("alphabetically-sorted-dependencies", rule, {
     },
     // unsorted peer dependencies
     {
-      code: `
-      ({
+      code: `({
         "name": "p1",
         "peerDependencies": {
           "a": "~1.0.0",
           "@scope/a": "~1.0.0"
         }
-      })
-      `,
+      })`,
       filename: "package.json",
       errors: [
         {
@@ -119,15 +118,13 @@ tester.run("alphabetically-sorted-dependencies", rule, {
     },
     // unsorted optional dependencies
     {
-      code: `
-      ({
+      code: `({
         "name": "p1",
         "optionalDependencies": {
           "a": "~1.0.0",
           "@scope/a": "~1.0.0"
         }
-      })
-      `,
+      })`,
       filename: "package.json",
       errors: [
         {
@@ -138,8 +135,7 @@ tester.run("alphabetically-sorted-dependencies", rule, {
     },
     // unsorted dev dependencies but sorted dependencies
     {
-      code: `
-        ({
+      code: `({
           "name": "p1",
           "dependencies": {
             "a": "~1.0.0",
@@ -149,8 +145,7 @@ tester.run("alphabetically-sorted-dependencies", rule, {
             "a": "~1.0.0",
             "@scope/a": "~1.0.0"
           }
-        })
-        `,
+        })`,
       filename: "package.json",
       errors: [
         { messageId: "unsortedDependencies", data: { key: "devDependencies" } },

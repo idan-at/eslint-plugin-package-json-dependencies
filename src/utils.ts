@@ -1,46 +1,23 @@
 import path from "path";
-import { Rule } from "eslint";
-import { ObjectExpression } from "estree";
+
+type Dependencies = Record<string, string>;
 
 const isPackageJsonFile = (filePath: string): boolean =>
   path.basename(filePath) === "package.json";
 
-const isValidJsonAST = (node: Rule.Node): boolean =>
-  node.type === "Program" &&
-  node.body.length === 1 &&
-  node.body[0].type === "ExpressionStatement" &&
-  node.body[0].expression.type === "ObjectExpression";
+const isValidJson = (text: string): boolean => {
+  try {
+    JSON.parse(text);
 
-const extractPropertyObjectExpression = (
-  node: ObjectExpression,
-  propertyName: string
-): string[] => {
-  const property = node.properties.find(
-    (property) =>
-      property.type === "Property" &&
-      property.key.type === "Literal" &&
-      property.key.value === propertyName
-  );
-
-  if (
-    !property ||
-    property.type !== "Property" ||
-    property.value.type !== "ObjectExpression"
-  ) {
-    return [];
+    return true;
+  } catch (e) {
+    return false;
   }
-
-  return property.value.properties.reduce<string[]>((acc, property) => {
-    if (
-      property.type === "Property" &&
-      property.key.type === "Literal" &&
-      typeof property.key.value === "string"
-    ) {
-      acc.push(property.key.value);
-    }
-
-    return acc;
-  }, []);
 };
 
-export { isPackageJsonFile, isValidJsonAST, extractPropertyObjectExpression };
+const getDependenciesSafe = (
+  object: Record<string, Dependencies>,
+  key: string
+): string[] => Object.keys(object[key] || {}) || [];
+
+export { isPackageJsonFile, isValidJson, getDependenciesSafe };

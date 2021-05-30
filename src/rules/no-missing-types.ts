@@ -1,12 +1,7 @@
-import {
-  isPackageJsonFile,
-  isValidJsonAST,
-  extractPropertyObjectExpression,
-} from "../utils";
+import { isPackageJsonFile, isValidJson, getDependenciesSafe } from "../utils";
 import { hasTypes } from "../has-types";
 import { Rule } from "eslint";
 import { groupBy } from "lodash";
-import { Program, ExpressionStatement, ObjectExpression } from "estree";
 import micromatch from "micromatch";
 
 interface RuleOptions {
@@ -45,13 +40,15 @@ const rule: Rule.RuleModule = {
       "Program:exit": (node: Rule.Node) => {
         const filePath = context.getFilename();
 
-        const cwd = context.getCwd();
-
         if (!isPackageJsonFile(filePath)) {
           return;
         }
 
-        if (!isValidJsonAST(node)) {
+        const cwd = context.getCwd();
+        const processedSource = context.getSourceCode().text;
+        const text = processedSource.substring(1, processedSource.length - 1);
+
+        if (!isValidJson(text)) {
           context.report({
             node,
             messageId: "invalidJson",
@@ -63,13 +60,11 @@ const rule: Rule.RuleModule = {
         const { excludePatterns = [] } = (context.options[0] ||
           {}) as RuleOptions;
 
-        const packageJsonAST = (
-          (node as Program).body[0] as ExpressionStatement
-        ).expression as ObjectExpression;
+        const packageJson = JSON.parse(text);
 
         const dependencies = [
-          ...extractPropertyObjectExpression(packageJsonAST, "devDependencies"),
-          ...extractPropertyObjectExpression(packageJsonAST, "dependencies"),
+          ...getDependenciesSafe(packageJson, "devDependencies"),
+          ...getDependenciesSafe(packageJson, "dependencies"),
         ];
 
         const {

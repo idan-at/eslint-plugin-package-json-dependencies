@@ -9,7 +9,7 @@ const processors = {
     postprocess: (messages: PostProcessMessage[][]) =>
       messages[0].filter(
         (message) =>
-          message.ruleId === "package-json-dependencies/no-missing-types"
+          message.ruleId.startsWith("package-json-dependencies/")
       ),
   },
 };

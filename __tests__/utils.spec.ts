@@ -1,11 +1,8 @@
 import {
   isPackageJsonFile,
-  isValidJsonAST,
-  extractPropertyObjectExpression,
+  isValidJson,
+  getDependenciesSafe,
 } from "../src/utils";
-import * as esprima from "esprima";
-import { Rule } from "eslint";
-import { ExpressionStatement, ObjectExpression } from "estree";
 
 describe("utils", () => {
   test("isPackageJsonFile", () => {
@@ -15,25 +12,20 @@ describe("utils", () => {
   });
 
   test("isValidJsonAST", () => {
-    expect(isValidJsonAST({ type: "Literal" } as Rule.Node)).toBe(false);
-    expect(
-      isValidJsonAST(esprima.parseScript("const x = 1") as Rule.Node)
-    ).toBe(false);
-    expect(isValidJsonAST(esprima.parseScript("(1)") as Rule.Node)).toBe(false);
-    expect(isValidJsonAST(esprima.parseScript("({})") as Rule.Node)).toBe(true);
+    expect(isValidJson("aaa")).toBe(false);
+    expect(isValidJson("{}")).toBe(true);
   });
 
-  test("extractPropertyObjectExpression", () => {
-    const objectExpression = esprima.parseScript(
-      "({'property': {'foo': 'bar', bar: []}})"
-    );
+  test("getDependenciesSafe", () => {
+    const packageJson = {
+      dependencies: { foo: "bar" },
+    };
 
-    expect(
-      extractPropertyObjectExpression(
-        (objectExpression.body[0] as ExpressionStatement)
-          .expression as ObjectExpression,
-        "property"
-      )
-    ).toStrictEqual(["foo"]);
+    expect(getDependenciesSafe(packageJson, "dependencies")).toStrictEqual([
+      "foo",
+    ]);
+    expect(getDependenciesSafe(packageJson, "devDependencies")).toStrictEqual(
+      []
+    );
   });
 });

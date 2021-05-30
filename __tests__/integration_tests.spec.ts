@@ -1,7 +1,10 @@
 import { ESLint } from "eslint";
 import { execSync } from "child_process";
 import * as plugin from "..";
-import { NO_MISSING_TYPES_FIXTURE_PATH, ALPHABETICALLY_SORTED_DEPENDENCIES_FIXTURES_PATH } from "./constants";
+import {
+  NO_MISSING_TYPES_FIXTURE_PATH,
+  ALPHABETICALLY_SORTED_DEPENDENCIES_FIXTURES_PATH,
+} from "./constants";
 
 const createLiner = (cwd: string): ESLint =>
   new ESLint({
@@ -29,9 +32,9 @@ describe("integration tests", () => {
 
   describe.skip("no-missing-types", () => {
     test("works with json files", async () => {
-      const results = await createLiner(NO_MISSING_TYPES_FIXTURE_PATH).lintFiles(
-        "package.json"
-      );
+      const results = await createLiner(
+        NO_MISSING_TYPES_FIXTURE_PATH
+      ).lintFiles("package.json");
 
       console.log(results[0]);
     });
@@ -39,9 +42,9 @@ describe("integration tests", () => {
 
   describe.skip("alphabetically-sorted-dependencies", () => {
     test("works with json files", async () => {
-      const results = await createLiner(ALPHABETICALLY_SORTED_DEPENDENCIES_FIXTURES_PATH).lintFiles(
-        "package.json"
-      );
+      const results = await createLiner(
+        ALPHABETICALLY_SORTED_DEPENDENCIES_FIXTURES_PATH
+      ).lintFiles("package.json");
 
       console.log(results[0]);
     });
