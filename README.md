@@ -8,17 +8,8 @@ This plugin contains rules for maintaining a valid, consistent `package.json` de
 
 # Installation
 
-1. Make sure `eslint` is installed, by runnning:
 ```bash
-eslint --version
-```
-If you get an error message, run:
-```bash
-npm install -g eslint
-```
-2. Run:
-```bash
-npm install --save-dev eslint-plugin-package-json-dependencies
+npm install --save-dev eslint eslint-plugin-package-json-dependencies
 ```
 
 # Usage
