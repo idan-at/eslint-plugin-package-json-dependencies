@@ -43,3 +43,4 @@ npm install --save-dev eslint eslint-plugin-package-json-dependencies
 - [no-missing-types](https://github.com/idan-at/eslint-plugin-package-json-dependencies/blob/master/docs/rules/no-missing-types.md)
 - [alphabetically-sorted-dependencies](https://github.com/idan-at/eslint-plugin-package-json-dependencies/blob/master/docs/rules/alphabetically-sorted-dependencies.md)
 - [controlled-versions](https://github.com/idan-at/eslint-plugin-package-json-dependencies/blob/master/docs/rules/controlled-versions.md)
+- [better-alternative](https://github.com/idan-at/eslint-plugin-package-json-dependencies/blob/master/docs/rules/better-alternative.md)

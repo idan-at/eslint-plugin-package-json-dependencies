@@ -4,6 +4,7 @@ import {
   NO_MISSING_TYPES_FIXTURE_PATH,
   ALPHABETICALLY_SORTED_DEPENDENCIES_FIXTURES_PATH,
   CONTROLLED_VERSIONS_FIXTURE_PATH,
+  BETTER_ALTERNATIVE_FIXTURES_PATH,
 } from "./constants";
 
 const createLiner = (cwd: string, rules: Partial<Linter.RulesRecord>): ESLint =>
@@ -117,4 +118,30 @@ describe("integration tests", () => {
       "Non controlled version found for dependency 'bar'"
     );
   });
+
+  test("better-alternative", async () => {
+    const results = await createLiner(
+      BETTER_ALTERNATIVE_FIXTURES_PATH,
+      {
+        "package-json-dependencies/better-alternative": ["error", { alternatives: { 'foo': 'bar' }}],
+      }
+    ).lintFiles("package.json");
+
+    expect(results).toHaveLength(1);
+    expect(results[0]).toHaveProperty("errorCount", 1);
+    expect(results[0]).toHaveProperty("warningCount", 0);
+    expect(results[0].messages).toHaveLength(1);
+    expect(results[0].messages[0]).toHaveProperty(
+      "ruleId",
+      "package-json-dependencies/better-alternative"
+    );
+    expect(results[0].messages[0]).toHaveProperty(
+      "messageId",
+      "betterAlternativeExists"
+    );
+    expect(results[0].messages[0]).toHaveProperty(
+      "message",
+      "Replace 'foo' with 'bar'"
+    );
+  })
 });

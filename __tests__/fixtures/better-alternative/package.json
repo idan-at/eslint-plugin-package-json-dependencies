@@ -1,0 +1,8 @@
+{
+  "name": "better-alternative",
+  "description": "better-alternative fixture",
+  "license": "ISC",
+  "dependencies": {
+    "foo": "1.0.0"
+  }
+}
