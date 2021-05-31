@@ -1,0 +1,11 @@
+{
+  "name": "controlled-versions",
+  "description": "controlled-versions fixture",
+  "license": "ISC",
+  "dependencies": {
+    "foo": "latest",
+    "bar": "^4.17.0",
+    "baz": "~4.17.0",
+    "ignored": "latest"
+  }
+}

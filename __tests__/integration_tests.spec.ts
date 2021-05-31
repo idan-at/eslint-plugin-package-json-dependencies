@@ -3,6 +3,7 @@ import { execSync } from "child_process";
 import {
   NO_MISSING_TYPES_FIXTURE_PATH,
   ALPHABETICALLY_SORTED_DEPENDENCIES_FIXTURES_PATH,
+  CONTROLLED_VERSIONS_FIXTURE_PATH,
 } from "./constants";
 
 const createLiner = (cwd: string, rules: Partial<Linter.RulesRecord>): ESLint =>
@@ -76,6 +77,44 @@ describe("integration tests", () => {
     expect(results[0].messages[0]).toHaveProperty(
       "message",
       "Dependencies under the 'dependencies' key are not alphabetically sorted"
+    );
+  });
+
+  test("controlled-versions", async () => {
+    const results = await createLiner(CONTROLLED_VERSIONS_FIXTURE_PATH, {
+      "package-json-dependencies/controlled-versions": [
+        "error",
+        { granularity: "patch", excludePatterns: ["ignored"] },
+      ],
+    }).lintFiles("package.json");
+
+    expect(results).toHaveLength(1);
+    expect(results[0]).toHaveProperty("errorCount", 2);
+    expect(results[0]).toHaveProperty("warningCount", 0);
+    expect(results[0].messages).toHaveLength(2);
+    expect(results[0].messages[0]).toHaveProperty(
+      "ruleId",
+      "package-json-dependencies/controlled-versions"
+    );
+    expect(results[0].messages[0]).toHaveProperty(
+      "messageId",
+      "nonControlledDependency"
+    );
+    expect(results[0].messages[0]).toHaveProperty(
+      "message",
+      "Non controlled version found for dependency 'foo'"
+    );
+    expect(results[0].messages[1]).toHaveProperty(
+      "ruleId",
+      "package-json-dependencies/controlled-versions"
+    );
+    expect(results[0].messages[1]).toHaveProperty(
+      "messageId",
+      "nonControlledDependency"
+    );
+    expect(results[0].messages[1]).toHaveProperty(
+      "message",
+      "Non controlled version found for dependency 'bar'"
     );
   });
 });

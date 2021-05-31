@@ -22,7 +22,8 @@ const rule: Rule.RuleModule = {
   meta: {
     type: "problem",
     messages: {
-      nonControlledDependency: "Non controlled version found for {{ package }}",
+      nonControlledDependency:
+        "Non controlled version found for dependency '{{ package }}'",
     },
     docs: {
       description: "detect uncontrolled dependencies versions",
