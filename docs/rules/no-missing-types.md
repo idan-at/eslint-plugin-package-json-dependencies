@@ -34,4 +34,4 @@ __**Good**__:
 ````
 
 ## Options
-- `excludePatterns: string[]`: Tells the rule to ignore packages matching the given patterns. Might be useful for a custom `jest`-reporter or an `ESLint` plugin that doesn't have any types exposed.
+- `excludePatterns: string[]`: Tells this rule to ignore packages matching the given patterns. Might be useful for a custom `jest`-reporter or an `ESLint` plugin that doesn't have any types exposed.
