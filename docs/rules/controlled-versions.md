@@ -4,17 +4,17 @@ Makes sure any used package is set to a controlled version. A controlled version
 
 Supported granularity:
 - `fixed`: All packages versions should be fixed (e.g `1.0.0`).
-- `patch`: All packages versions should start with `~` (e.g `~1.0.0`).
-- `minor`: All packages versions should start with `^` (e.g `^1.0.0`).
+- `patch`: All packages versions should start with `~` (e.g `~1.0.0`), or follow the restrictions for `fixed`.
+- `minor`: All packages versions should start with `^` (e.g `^1.0.0`) or follow the restrictions for `patch`.
 
 Examples for assuming `patch` is set:
 
-__**Bad**__: (`lodash` should be `~4.17.0`)
+__**Bad**__:
 
 ```json
 {
   "dependencies": {
-    "lodash": "4.17.0"
+    "lodash": "^4.17.0"
   }
 }
 
@@ -26,6 +26,17 @@ __**Good**__:
 {
   "dependencies": {
     "lodash": "~4.17.0"
+  }
+}
+
+````
+
+__**Also Good**__:
+
+```json
+{
+  "dependencies": {
+    "lodash": "4.17.0"
   }
 }
 

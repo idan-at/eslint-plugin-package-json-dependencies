@@ -37,6 +37,7 @@ tester.run("controlled-versions", rule, {
       code: `{
         "name": "p1",
         "dependencies": {
+          "axios": "4.17.21",
           "lodash": "~4.17.21"
         }
       }`,
@@ -48,7 +49,9 @@ tester.run("controlled-versions", rule, {
       code: `{
         "name": "p1",
         "dependencies": {
-          "lodash": "^4.17.21"
+          "axios": "~4.17.21",
+          "lodash": "~4.17.21",
+          "foo": "^4.17.21"
         }
       }`,
       filename: "package.json",
@@ -100,7 +103,6 @@ tester.run("controlled-versions", rule, {
       code: `{
         "name": "p1",
         "dependencies": {
-          "lodash": "4.17.21",
           "axios": "^4.17.21",
           "foo": "latest",
           "bar": "*"
@@ -109,19 +111,16 @@ tester.run("controlled-versions", rule, {
       filename: "package.json",
       options: [{ granularity: "patch" }],
       errors: [
-        { messageId: "nonControlledDependency", data: { package: "lodash" } },
         { messageId: "nonControlledDependency", data: { package: "axios" } },
         { messageId: "nonControlledDependency", data: { package: "foo" } },
         { messageId: "nonControlledDependency", data: { package: "bar" } },
       ]
     },
-    // patch with explicitly passing granularity
+    // minor with explicitly passing granularity
     {
       code: `{
         "name": "p1",
         "dependencies": {
-          "lodash": "4.17.21",
-          "axios": "~4.17.21",
           "foo": "latest",
           "bar": "*"
         }
@@ -129,8 +128,6 @@ tester.run("controlled-versions", rule, {
       filename: "package.json",
       options: [{ granularity: "minor" }],
       errors: [
-        { messageId: "nonControlledDependency", data: { package: "lodash" } },
-        { messageId: "nonControlledDependency", data: { package: "axios" } },
         { messageId: "nonControlledDependency", data: { package: "foo" } },
         { messageId: "nonControlledDependency", data: { package: "bar" } },
       ]

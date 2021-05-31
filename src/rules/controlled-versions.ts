@@ -4,6 +4,10 @@ import { forEach } from "lodash";
 import { parse as parseSemver } from "semver";
 import { DEPENDENCIES_KEYS } from "./constants";
 
+const isFixedVersion = (version: string): boolean => parseSemver(version) !== null;
+const isPatchOrLess = (version: string): boolean => isFixedVersion(version) || version.startsWith("~");
+const isMinorOrLess = (version: string): boolean => isPatchOrLess(version) || version.startsWith("^");
+
 interface RuleOptions {
   granularity?: "fixed" | "patch" | "minor";
 }
@@ -51,19 +55,7 @@ const rule: Rule.RuleModule = {
           forEach(packageJson[key] || {}, (version, dependency) => {
             switch (granularity) {
               case "fixed":
-                if (!parseSemver(version)) {
-                  context.report({
-                    node,
-                    messageId: "nonControlledDependency",
-                    data: {
-                      package: dependency,
-                    },
-                  })
-                }
-
-                break;
-              case "minor":
-                if (!version.startsWith("^")) {
+                if (!isFixedVersion(version)) {
                   context.report({
                     node,
                     messageId: "nonControlledDependency",
@@ -75,7 +67,19 @@ const rule: Rule.RuleModule = {
 
                 break;
               case "patch":
-                if (!version.startsWith("~")) {
+                if (!isPatchOrLess(version)) {
+                  context.report({
+                    node,
+                    messageId: "nonControlledDependency",
+                    data: {
+                      package: dependency,
+                    },
+                  })
+                }
+
+                break;
+              case "minor":
+                if (!isMinorOrLess(version)) {
                   context.report({
                     node,
                     messageId: "nonControlledDependency",
