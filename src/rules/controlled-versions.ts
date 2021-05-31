@@ -6,9 +6,12 @@ import { DEPENDENCIES_KEYS } from "./constants";
 import { Dependencies } from "../types";
 import micromatch from "micromatch";
 
-const isFixedVersion = (version: string): boolean => parseSemver(version) !== null;
-const isPatchOrLess = (version: string): boolean => isFixedVersion(version) || version.startsWith("~");
-const isMinorOrLess = (version: string): boolean => isPatchOrLess(version) || version.startsWith("^");
+const isFixedVersion = (version: string): boolean =>
+  parseSemver(version) !== null;
+const isPatchOrLess = (version: string): boolean =>
+  isFixedVersion(version) || version.startsWith("~");
+const isMinorOrLess = (version: string): boolean =>
+  isPatchOrLess(version) || version.startsWith("^");
 
 interface RuleOptions {
   granularity?: "fixed" | "patch" | "minor";
@@ -32,7 +35,7 @@ const rule: Rule.RuleModule = {
         properties: {
           granularity: {
             type: "string",
-            enum: ["fixed", "patch", "minor"]
+            enum: ["fixed", "patch", "minor"],
           },
           excludePatterns: {
             type: "array",
@@ -56,17 +59,22 @@ const rule: Rule.RuleModule = {
 
         const { text } = context.getSourceCode();
 
-        const { granularity = "fixed", excludePatterns = [] } = (context.options[0] || {}) as RuleOptions;
+        const { granularity = "fixed", excludePatterns = [] } = (context
+          .options[0] || {}) as RuleOptions;
 
         const packageJson = JSON.parse(text);
 
         DEPENDENCIES_KEYS.forEach((key) => {
           const dependencies: Dependencies = packageJson[key] || {};
 
-          _(dependencies).pickBy((_, dependency) => micromatch([dependency], excludePatterns).length === 0)
+          _(dependencies)
+            .pickBy(
+              (_, dependency) =>
+                micromatch([dependency], excludePatterns).length === 0
+            )
             .forEach((version, dependency) => {
               if (!version) {
-                return
+                return;
               }
 
               switch (granularity) {
@@ -78,7 +86,7 @@ const rule: Rule.RuleModule = {
                       data: {
                         package: dependency,
                       },
-                    })
+                    });
                   }
 
                   break;
@@ -90,7 +98,7 @@ const rule: Rule.RuleModule = {
                       data: {
                         package: dependency,
                       },
-                    })
+                    });
                   }
 
                   break;
@@ -102,7 +110,7 @@ const rule: Rule.RuleModule = {
                       data: {
                         package: dependency,
                       },
-                    })
+                    });
                   }
 
                   break;

@@ -5,5 +5,4 @@ const DEPENDENCIES_KEYS = [
   "optionalDependencies",
 ];
 
-
 export { DEPENDENCIES_KEYS };

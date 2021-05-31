@@ -1,5 +1,5 @@
 import path from "path";
-import { Dependencies } from "./types"
+import { Dependencies } from "./types";
 
 const isPackageJsonFile = (filePath: string): boolean =>
   path.basename(filePath) === "package.json";

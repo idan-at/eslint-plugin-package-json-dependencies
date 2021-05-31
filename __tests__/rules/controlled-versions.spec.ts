@@ -19,7 +19,7 @@ tester.run("controlled-versions", rule, {
           "lodash": "4.17.21"
         }
       }`,
-      filename: "package.json"
+      filename: "package.json",
     },
     // fixed with explicitly passing granularity
     {
@@ -30,7 +30,7 @@ tester.run("controlled-versions", rule, {
         }
       }`,
       filename: "package.json",
-      options: [{ granularity: "fixed" }]
+      options: [{ granularity: "fixed" }],
     },
     // patch
     {
@@ -42,7 +42,7 @@ tester.run("controlled-versions", rule, {
         }
       }`,
       filename: "package.json",
-      options: [{ granularity: "patch" }]
+      options: [{ granularity: "patch" }],
     },
     // minor
     {
@@ -55,7 +55,7 @@ tester.run("controlled-versions", rule, {
         }
       }`,
       filename: "package.json",
-      options: [{ granularity: "minor" }]
+      options: [{ granularity: "minor" }],
     },
     // excluded
     {
@@ -67,8 +67,8 @@ tester.run("controlled-versions", rule, {
         }
       }`,
       filename: "package.json",
-      options: [{ granularity: "minor", excludePatterns: ["foo*"] }]
-    }
+      options: [{ granularity: "minor", excludePatterns: ["foo*"] }],
+    },
   ],
   invalid: [
     // fixed without explicitly passing granularity
@@ -88,7 +88,7 @@ tester.run("controlled-versions", rule, {
         { messageId: "nonControlledDependency", data: { package: "axios" } },
         { messageId: "nonControlledDependency", data: { package: "foo" } },
         { messageId: "nonControlledDependency", data: { package: "bar" } },
-      ]
+      ],
     },
     // fixed with explicitly passing granularity
     {
@@ -108,7 +108,7 @@ tester.run("controlled-versions", rule, {
         { messageId: "nonControlledDependency", data: { package: "axios" } },
         { messageId: "nonControlledDependency", data: { package: "foo" } },
         { messageId: "nonControlledDependency", data: { package: "bar" } },
-      ]
+      ],
     },
     // patch with explicitly passing granularity
     {
@@ -126,7 +126,7 @@ tester.run("controlled-versions", rule, {
         { messageId: "nonControlledDependency", data: { package: "axios" } },
         { messageId: "nonControlledDependency", data: { package: "foo" } },
         { messageId: "nonControlledDependency", data: { package: "bar" } },
-      ]
+      ],
     },
     // minor with explicitly passing granularity
     {
@@ -142,7 +142,7 @@ tester.run("controlled-versions", rule, {
       errors: [
         { messageId: "nonControlledDependency", data: { package: "foo" } },
         { messageId: "nonControlledDependency", data: { package: "bar" } },
-      ]
+      ],
     },
-  ]
-})
+  ],
+});
