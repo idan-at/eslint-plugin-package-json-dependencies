@@ -1,6 +1,5 @@
 import path from "path";
-
-type Dependencies = Record<string, string>;
+import { Dependencies } from "./types"
 
 const isPackageJsonFile = (filePath: string): boolean =>
   path.basename(filePath) === "package.json";

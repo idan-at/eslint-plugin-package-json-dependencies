@@ -31,4 +31,4 @@ __**Good**__: (`@types/lodash` is installed for `lodash`)
 **NOTE**: If a package that contains its own types is installed, nothing else needs to be installed. (for example, `axios`)
 
 ## Options
-Sometimes you want to allow certain packages to be installed without having types, a custom jest-reporter or an ESLint plugin are great examples. In this case, use the `excludePatterns: string[]` option to make this rule ignore those packages and do not fail.
+- `excludePatterns: string[]`: Makes this rule ignore packages that match the given patterns and do not fail. Might be useful for a custom jest-reporter or an ESLint plugin that do not have types.

@@ -56,6 +56,18 @@ tester.run("controlled-versions", rule, {
       }`,
       filename: "package.json",
       options: [{ granularity: "minor" }]
+    },
+    // excluded
+    {
+      code: `{
+        "name": "p1",
+        "dependencies": {
+          "foo1": "latest",
+          "foo2": "*"
+        }
+      }`,
+      filename: "package.json",
+      options: [{ granularity: "minor", excludePatterns: ["foo*"] }]
     }
   ],
   invalid: [
@@ -82,7 +94,7 @@ tester.run("controlled-versions", rule, {
     {
       code: `{
         "name": "p1",
-        "dependencies": {
+        "devDependencies": {
           "lodash": "~4.17.21",
           "axios": "^4.17.21",
           "foo": "latest",
@@ -102,7 +114,7 @@ tester.run("controlled-versions", rule, {
     {
       code: `{
         "name": "p1",
-        "dependencies": {
+        "peerDependencies": {
           "axios": "^4.17.21",
           "foo": "latest",
           "bar": "*"
@@ -120,7 +132,7 @@ tester.run("controlled-versions", rule, {
     {
       code: `{
         "name": "p1",
-        "dependencies": {
+        "optionalDependencies": {
           "foo": "latest",
           "bar": "*"
         }

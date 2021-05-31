@@ -1,8 +1,10 @@
 import { isPackageJsonFile } from "../utils";
 import { Rule } from "eslint";
-import { forEach } from "lodash";
+import _ from "lodash";
 import { parse as parseSemver } from "semver";
 import { DEPENDENCIES_KEYS } from "./constants";
+import { Dependencies } from "../types";
+import micromatch from "micromatch";
 
 const isFixedVersion = (version: string): boolean => parseSemver(version) !== null;
 const isPatchOrLess = (version: string): boolean => isFixedVersion(version) || version.startsWith("~");
@@ -10,6 +12,7 @@ const isMinorOrLess = (version: string): boolean => isPatchOrLess(version) || ve
 
 interface RuleOptions {
   granularity?: "fixed" | "patch" | "minor";
+  excludePatterns: string[];
 }
 
 const rule: Rule.RuleModule = {
@@ -31,6 +34,12 @@ const rule: Rule.RuleModule = {
             type: "string",
             enum: ["fixed", "patch", "minor"]
           },
+          excludePatterns: {
+            type: "array",
+            items: {
+              type: "string",
+            },
+          },
         },
         additionalProperties: false,
       },
@@ -47,53 +56,60 @@ const rule: Rule.RuleModule = {
 
         const { text } = context.getSourceCode();
 
-        const { granularity = "fixed" } = (context.options[0] || {}) as RuleOptions;
+        const { granularity = "fixed", excludePatterns = [] } = (context.options[0] || {}) as RuleOptions;
 
         const packageJson = JSON.parse(text);
 
         DEPENDENCIES_KEYS.forEach((key) => {
-          forEach(packageJson[key] || {}, (version, dependency) => {
-            switch (granularity) {
-              case "fixed":
-                if (!isFixedVersion(version)) {
-                  context.report({
-                    node,
-                    messageId: "nonControlledDependency",
-                    data: {
-                      package: dependency,
-                    },
-                  })
-                }
+          const dependencies: Dependencies = packageJson[key] || {};
 
-                break;
-              case "patch":
-                if (!isPatchOrLess(version)) {
-                  context.report({
-                    node,
-                    messageId: "nonControlledDependency",
-                    data: {
-                      package: dependency,
-                    },
-                  })
-                }
+          _(dependencies).pickBy((_, dependency) => micromatch([dependency], excludePatterns).length === 0)
+            .forEach((version, dependency) => {
+              if (!version) {
+                return
+              }
 
-                break;
-              case "minor":
-                if (!isMinorOrLess(version)) {
-                  context.report({
-                    node,
-                    messageId: "nonControlledDependency",
-                    data: {
-                      package: dependency,
-                    },
-                  })
-                }
+              switch (granularity) {
+                case "fixed":
+                  if (!isFixedVersion(version)) {
+                    context.report({
+                      node,
+                      messageId: "nonControlledDependency",
+                      data: {
+                        package: dependency,
+                      },
+                    })
+                  }
 
-                break;
-              default:
-              // unsupported granularity, ignoring.
-            }
-          })
+                  break;
+                case "patch":
+                  if (!isPatchOrLess(version)) {
+                    context.report({
+                      node,
+                      messageId: "nonControlledDependency",
+                      data: {
+                        package: dependency,
+                      },
+                    })
+                  }
+
+                  break;
+                case "minor":
+                  if (!isMinorOrLess(version)) {
+                    context.report({
+                      node,
+                      messageId: "nonControlledDependency",
+                      data: {
+                        package: dependency,
+                      },
+                    })
+                  }
+
+                  break;
+                default:
+                // unsupported granularity, ignoring.
+              }
+            });
         });
       },
     };
