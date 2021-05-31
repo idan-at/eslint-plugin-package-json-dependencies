@@ -15,7 +15,7 @@ const rule: Rule.RuleModule = {
     type: "problem",
     messages: {
       unsortedDependencies:
-        "Dependencies under {{ key }} are not alphabetically sorted",
+        "Dependencies under the '{{ key }}' key are not alphabetically sorted",
     },
     docs: {
       description: "sort dependencies alphabetically",

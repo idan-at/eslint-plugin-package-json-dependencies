@@ -1,0 +1,5 @@
+{
+  "name": "made-up-package",
+  "description": "a package without definitions for tests",
+  "license": "ISC"
+}

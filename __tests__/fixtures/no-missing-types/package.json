@@ -4,6 +4,7 @@
   "license": "ISC",
   "dependencies": {
     "lodash": "~4.17.0",
+    "made-up-package": "file:./made-up-package",
     "streamifier": "~0.1.0"
   },
   "devDependencies": {
