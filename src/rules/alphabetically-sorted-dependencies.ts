@@ -1,13 +1,7 @@
 import { isPackageJsonFile, getDependenciesSafe } from "../utils";
 import { Rule } from "eslint";
 import _ from "lodash";
-
-const DEPENDENCIES_KEYS = [
-  "dependencies",
-  "devDependencies",
-  "peerDependencies",
-  "optionalDependencies",
-];
+import { DEPENDENCIES_KEYS } from "./constants";
 
 const isSorted = (list: string[]): boolean =>
   list.slice(1).every((item, i) => list[i] <= item);

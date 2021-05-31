@@ -3,6 +3,7 @@
   "parser": ".",
   "rules": {
     "self/no-missing-types": ["error", { "excludePatterns": ["eslint-plugin-self"] }],
-    "self/alphabetically-sorted-dependencies": "error"
+    "self/alphabetically-sorted-dependencies": "error",
+    "self/controlled-versions": ["error", { "granularity": "patch" }]
   }
 }
