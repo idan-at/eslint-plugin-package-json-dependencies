@@ -14,11 +14,17 @@ Then,
 `npm install --save-dev eslint-plugin-package-json-dependencies`
 
 # Usage
-First, add the plugin to your eslint config:
+First, add the plugin and its parser to your eslint config `overrides` section:
 ```json
 // eslintrc.json
 {
-  "plugins": ["package-json-dependencies"]
+  "overrides": [
+    {
+      "files": ["*.json"],
+      "parser": "eslint-plugin-package-json-dependencies",
+      "plugins": ["package-json-dependencies"],
+    }
+  ]
 }
 ```
 

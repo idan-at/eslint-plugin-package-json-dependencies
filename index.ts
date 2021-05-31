@@ -1,4 +1,4 @@
 import { rules } from "./src/rules";
-import { processors } from "./src/processors";
+import { parseForESLint } from "./src/parse-for-eslint";
 
-export { rules, processors };
+export { rules, parseForESLint };

@@ -1,7 +1,8 @@
 import { RuleTester } from "eslint";
+import path from "path";
 import { rule } from "../../src/rules/no-missing-types";
 
-const tester = new RuleTester();
+const tester = new RuleTester({ parser: path.resolve(".") });
 
 tester.run("no-missing-types", rule, {
   valid: [
@@ -12,7 +13,7 @@ tester.run("no-missing-types", rule, {
     },
     // has @types without the dependency
     {
-      code: `module.exports = {
+      code: `{
       "name": "p1",
       "devDependencies": {
         "@types/package": "~1.0.0"
@@ -22,7 +23,7 @@ tester.run("no-missing-types", rule, {
     },
     // has scoped @types without the dependency
     {
-      code: `module.exports = {
+      code: `{
       "name": "p1",
       "devDependencies": {
         "@types/scope__package": "~1.0.0"
@@ -32,7 +33,7 @@ tester.run("no-missing-types", rule, {
     },
     // has @types for a dependency
     {
-      code: `module.exports = {
+      code: `{
       "name": "p1",
       "dependencies": {
         "package": "~1.0.0"
@@ -45,7 +46,7 @@ tester.run("no-missing-types", rule, {
     },
     // has @types for a scoped dependency
     {
-      code: `module.exports = {
+      code: `{
       "name": "p1",
       "dependencies": {
         "@scope/package": "~1.0.0"
@@ -58,7 +59,7 @@ tester.run("no-missing-types", rule, {
     },
     // has @types for a dev-dependency
     {
-      code: `module.exports = {
+      code: `{
       "name": "p1",
       "devDependencies": {
         "package": "~1.0.0",
@@ -69,7 +70,7 @@ tester.run("no-missing-types", rule, {
     },
     // has @types for a scoped dev-dependency
     {
-      code: `module.exports = {
+      code: `{
       "name": "p1",
       "devDependencies": {
         "@scope/package": "~1.0.0",
@@ -80,7 +81,7 @@ tester.run("no-missing-types", rule, {
     },
     // misses @types but is excluded
     {
-      code: `module.exports = {
+      code: `{
       "name": "p1",
       "devDependencies": {
         "package": "~1.0.0"
@@ -91,7 +92,7 @@ tester.run("no-missing-types", rule, {
     },
     // misses scoped @types but is excluded
     {
-      code: `module.exports = {
+      code: `{
       "name": "p1",
       "devDependencies": {
         "@scope/package": "~1.0.0"
@@ -102,7 +103,7 @@ tester.run("no-missing-types", rule, {
     },
     // has dynamic types (relies on typescript being a dependency of this package)
     {
-      code: `module.exports = {
+      code: `{
       "name": "p1",
       "devDependencies": {
         "typescript": "~1.0.0"
@@ -112,15 +113,9 @@ tester.run("no-missing-types", rule, {
     },
   ],
   invalid: [
-    // invalid package.json file
-    {
-      code: `var x = 1;`,
-      filename: "package.json",
-      errors: [{ messageId: "invalidJson" }],
-    },
     // missing types for a dependency
     {
-      code: `module.exports = {
+      code: `{
         "name": "p1",
         "dependencies": {
           "package": "~1.0.0"
@@ -131,7 +126,7 @@ tester.run("no-missing-types", rule, {
     },
     // missing types for a scoped dependency
     {
-      code: `module.exports = {
+      code: `{
         "name": "p1",
         "dependencies": {
           "@scope/package": "~1.0.0"
@@ -144,7 +139,7 @@ tester.run("no-missing-types", rule, {
     },
     // missing types for a dev dependency
     {
-      code: `module.exports = {
+      code: `{
         "name": "p1",
         "devDependencies": {
           "package": "~1.0.0"
@@ -155,7 +150,7 @@ tester.run("no-missing-types", rule, {
     },
     // missing types for a scoped dev dependency
     {
-      code: `module.exports = {
+      code: `{
         "name": "p1",
         "devDependencies": {
           "@scope/package": "~1.0.0"

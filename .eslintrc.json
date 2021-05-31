@@ -1,5 +1,6 @@
 {
   "plugins": ["self"],
+  "parser": ".",
   "rules": {
     "self/no-missing-types": ["error", { "excludePatterns": ["eslint-plugin-self"] }],
     "self/alphabetically-sorted-dependencies": "error"

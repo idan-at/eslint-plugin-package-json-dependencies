@@ -1,6 +1,5 @@
-import { isPackageJsonFile, isValidJson, getDependenciesSafe } from "../utils";
+import { isPackageJsonFile, getDependenciesSafe } from "../utils";
 import { hasTypes } from "../has-types";
-import { jsToJson } from "../json-to-js";
 import { Rule } from "eslint";
 import { groupBy } from "lodash";
 import micromatch from "micromatch";
@@ -13,7 +12,6 @@ const rule: Rule.RuleModule = {
   meta: {
     type: "problem",
     messages: {
-      invalidJson: "Package JSON is not a valid JSON file",
       missingTypes: "Missing types for {{ package }}",
     },
     docs: {
@@ -46,16 +44,7 @@ const rule: Rule.RuleModule = {
         }
 
         const cwd = context.getCwd();
-        const text = jsToJson(context.getSourceCode().text);
-
-        if (!isValidJson(text)) {
-          context.report({
-            node,
-            messageId: "invalidJson",
-          });
-
-          return;
-        }
+        const { text } = context.getSourceCode();
 
         const { excludePatterns = [] } = (context.options[0] ||
           {}) as RuleOptions;

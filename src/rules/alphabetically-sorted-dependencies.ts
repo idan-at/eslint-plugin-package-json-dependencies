@@ -1,7 +1,6 @@
-import { isPackageJsonFile, isValidJson, getDependenciesSafe } from "../utils";
+import { isPackageJsonFile, getDependenciesSafe } from "../utils";
 import { Rule } from "eslint";
 import _ from "lodash";
-import { jsToJson } from "../json-to-js";
 
 const DEPENDENCIES_KEYS = [
   "dependencies",
@@ -21,7 +20,6 @@ const rule: Rule.RuleModule = {
   meta: {
     type: "problem",
     messages: {
-      invalidJson: "Package JSON is not a valid JSON file",
       unsortedDependencies:
         "Dependencies under {{ key }} are not alphabetically sorted",
     },
@@ -43,17 +41,7 @@ const rule: Rule.RuleModule = {
           return;
         }
 
-        const { text: processedSource } = context.getSourceCode();
-        const text = jsToJson(processedSource);
-
-        if (!isValidJson(text)) {
-          context.report({
-            node,
-            messageId: "invalidJson",
-          });
-
-          return;
-        }
+        const { text } = context.getSourceCode();
 
         const packageJson = JSON.parse(text);
 
@@ -68,9 +56,9 @@ const rule: Rule.RuleModule = {
                 key,
               },
               fix: (fixer: Rule.RuleFixer) => {
-                const keyIndex = processedSource.indexOf(`"${key}":`);
-                const rangeStart = processedSource.indexOf("{", keyIndex);
-                const rangeEnd = processedSource.indexOf("}", keyIndex) + 1;
+                const keyIndex = text.indexOf(`"${key}":`);
+                const rangeStart = text.indexOf("{", keyIndex);
+                const rangeEnd = text.indexOf("}", keyIndex) + 1;
 
                 const fixedSourceWithoutIndentation = JSON.stringify(
                   sortObjectKeysAlphabetically(packageJson[key]),

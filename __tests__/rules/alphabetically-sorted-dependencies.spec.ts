@@ -1,8 +1,9 @@
 import { RuleTester } from "eslint";
+import path from "path";
 import { rule } from "../../src/rules/alphabetically-sorted-dependencies";
 import dedent from "dedent";
 
-const tester = new RuleTester();
+const tester = new RuleTester({ parser: path.resolve(".") });
 
 tester.run("alphabetically-sorted-dependencies", rule, {
   valid: [
@@ -13,7 +14,7 @@ tester.run("alphabetically-sorted-dependencies", rule, {
     },
     // sorted dependencies
     {
-      code: `module.exports = {
+      code: `{
         "dependencies": {
           "@scope/a": "~1.0.0",
           "@scope/b": "~1.0.0",
@@ -25,7 +26,7 @@ tester.run("alphabetically-sorted-dependencies", rule, {
     },
     // sorted dev dependencies
     {
-      code: `module.exports = {
+      code: `{
           "devDependencies": {
             "@scope/a": "~1.0.0",
             "@scope/b": "~1.0.0",
@@ -37,7 +38,7 @@ tester.run("alphabetically-sorted-dependencies", rule, {
     },
     // sorted peer dependencies
     {
-      code: `module.exports = {
+      code: `{
         "peerDependencies": {
           "@scope/a": "~1.0.0",
           "@scope/b": "~1.0.0",
@@ -49,7 +50,7 @@ tester.run("alphabetically-sorted-dependencies", rule, {
     },
     // sorted optional dependencies
     {
-      code: `module.exports = {
+      code: `{
           "optionalDependencies": {
             "@scope/a": "~1.0.0",
             "@scope/b": "~1.0.0",
@@ -61,15 +62,9 @@ tester.run("alphabetically-sorted-dependencies", rule, {
     },
   ],
   invalid: [
-    // invalid package.json file
-    {
-      code: `var x = 1;`,
-      filename: "package.json",
-      errors: [{ messageId: "invalidJson" }],
-    },
     // unsorted dependencies
     {
-      code: dedent`module.exports = {
+      code: dedent`{
         "name": "p1",
         "dependencies": {
           "a": "~1.0.0",
@@ -80,7 +75,7 @@ tester.run("alphabetically-sorted-dependencies", rule, {
       errors: [
         { messageId: "unsortedDependencies", data: { key: "dependencies" } },
       ],
-      output: dedent`module.exports = {
+      output: dedent`{
         "name": "p1",
         "dependencies": {
           "@scope/a": "~1.0.0",
@@ -90,7 +85,7 @@ tester.run("alphabetically-sorted-dependencies", rule, {
     },
     // unsorted dev dependencies
     {
-      code: dedent`module.exports = {
+      code: dedent`{
         "name": "p1",
         "devDependencies": {
           "a": "~1.0.0",
@@ -101,7 +96,7 @@ tester.run("alphabetically-sorted-dependencies", rule, {
       errors: [
         { messageId: "unsortedDependencies", data: { key: "devDependencies" } },
       ],
-      output: dedent`module.exports = {
+      output: dedent`{
         "name": "p1",
         "devDependencies": {
           "@scope/a": "~1.0.0",
@@ -111,7 +106,7 @@ tester.run("alphabetically-sorted-dependencies", rule, {
     },
     // unsorted peer dependencies
     {
-      code: dedent`module.exports = {
+      code: dedent`{
         "name": "p1",
         "peerDependencies": {
           "a": "~1.0.0",
@@ -125,7 +120,7 @@ tester.run("alphabetically-sorted-dependencies", rule, {
           data: { key: "peerDependencies" },
         },
       ],
-      output: dedent`module.exports = {
+      output: dedent`{
         "name": "p1",
         "peerDependencies": {
           "@scope/a": "~1.0.0",
@@ -135,7 +130,7 @@ tester.run("alphabetically-sorted-dependencies", rule, {
     },
     // unsorted optional dependencies
     {
-      code: dedent`module.exports = {
+      code: dedent`{
         "name": "p1",
         "optionalDependencies": {
           "a": "~1.0.0",
@@ -149,7 +144,7 @@ tester.run("alphabetically-sorted-dependencies", rule, {
           data: { key: "optionalDependencies" },
         },
       ],
-      output: dedent`module.exports = {
+      output: dedent`{
         "name": "p1",
         "optionalDependencies": {
           "@scope/a": "~1.0.0",
@@ -159,7 +154,7 @@ tester.run("alphabetically-sorted-dependencies", rule, {
     },
     // unsorted dev dependencies but sorted dependencies
     {
-      code: dedent`module.exports = {
+      code: dedent`{
           "name": "p1",
           "dependencies": {
             "a": "~1.0.0",
@@ -174,7 +169,7 @@ tester.run("alphabetically-sorted-dependencies", rule, {
       errors: [
         { messageId: "unsortedDependencies", data: { key: "devDependencies" } },
       ],
-      output: dedent`module.exports = {
+      output: dedent`{
         "name": "p1",
         "dependencies": {
           "a": "~1.0.0",
