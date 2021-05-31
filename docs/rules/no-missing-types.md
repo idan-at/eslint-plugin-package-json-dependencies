@@ -2,7 +2,7 @@
 
 Ensures that any pacakges used has Typescript definitions (either included in the package itself, or installed as a separate `@types`-scoped dependency)
 
-**NOTE**: Pacakgess containing their own types do not require any supporting `@types`-scoped packages to be installed (e.g., `axios`).
+**NOTE**: Packages containing their own types do not require any supporting `@types`-scoped packages to be installed (e.g., `axios`).
 
 __**Bad**__: 
 
