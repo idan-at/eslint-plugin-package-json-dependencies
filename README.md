@@ -4,32 +4,41 @@
 [![Actions Status: build](https://github.com/idan-at/eslint-plugin-package-json-dependencies/workflows/test/badge.svg)](https://github.com/idan-at/eslint-plugin-package-json-dependencies/actions?query=workflow%3A"test")
 
 
-This plugin contains rules for valid and consistent package json dependencies.
+This plugin contains rules for maintaining a valid, consistent `package.json` dependency setup.
 
-# Install
-Make sure `eslint` is installed.
+# Installation
 
-Then,
-
-`npm install --save-dev eslint-plugin-package-json-dependencies`
+1. Make sure `eslint` is installed, by runnning:
+```bash
+eslint --version
+```
+If you get an error message, run:
+```bash
+npm install -g eslint
+```
+2. Run:
+```bash
+npm install --save-dev eslint-plugin-package-json-dependencies
+```
 
 # Usage
-First, add the plugin and its parser to your eslint config `overrides` section:
-```json
+
+1. Add the plugin and its parser to your eslint [config file](https://eslint.org/docs/user-guide/configuring/configuration-files) `overrides` section:
+```js
 // eslintrc.json
 {
   "overrides": [
     {
       "files": ["*.json"],
       "parser": "eslint-plugin-package-json-dependencies",
-      "plugins": ["package-json-dependencies"],
+      "plugins": ["package-json-dependencies"]
     }
   ]
 }
 ```
 
-Then, apply the specific rules you want:
-```json
+2. Apply the specific rules applicable to your repo, e.g.:
+```js
 // eslintrc.json
 {
   "rules": {
