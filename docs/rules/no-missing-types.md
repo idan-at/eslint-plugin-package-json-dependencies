@@ -1,8 +1,12 @@
 # no-missing-types
 
-Makes sure any used package has typescript definitions, whether it's packed within the package or installed as a separate @types package.
+Ensures that any pacakges used has Typescript definitions (either included in the package itself, or installed as a separate `@types`-scoped dependency)
 
-__**Bad**__: (`lodash` is used without installing its types)
+**NOTE**: Packages containing their own types do not require any supporting `@types`-scoped packages to be installed (e.g., `axios`).
+
+__**Bad**__: 
+
+`lodash` is used without installing `@types/lodash`:
 
 ```json
 {
@@ -13,7 +17,9 @@ __**Bad**__: (`lodash` is used without installing its types)
 
 ````
 
-__**Good**__: (`@types/lodash` is installed for `lodash`)
+__**Good**__: 
+
+`@types/lodash` is included as dev-depdendency, providing types for the `lodash` package:
 
 ```json
 {
@@ -27,8 +33,5 @@ __**Good**__: (`@types/lodash` is installed for `lodash`)
 
 ````
 
-
-**NOTE**: If a package that contains its own types is installed, nothing else needs to be installed. (for example, `axios`)
-
 ## Options
-- `excludePatterns: string[]`: Makes this rule ignore packages that match the given patterns and do not fail. Might be useful for a custom jest-reporter or an ESLint plugin that do not have types.
+- `excludePatterns: string[]`: Tells this rule to ignore packages matching the given patterns. Might be useful for a custom `jest`-reporter or an `ESLint` plugin that doesn't have any types exposed.
