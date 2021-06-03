@@ -42,6 +42,9 @@ __**Also Good**__:
 
 ````
 
+NOTE: This rule will update your dependencies' versions, if the --fix flag is passed to ESLint.
+
+
 ## Options
 - `granularity`: `fixed` / `patch` / `minor`, as mentioned above. If not provided, defaults to `fixed`.
 - `excludePatterns: string[]`: Makes this rule ignore packages that match the given patterns and do not fail. Might be useful for specific packages that are used with dist-tags.
