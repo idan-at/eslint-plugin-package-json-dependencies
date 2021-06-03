@@ -1,9 +1,12 @@
+import dedent from "dedent";
 import { RuleTester } from "eslint";
 import path from "path";
 import { rule } from "../../src/rules/controlled-versions";
 
 const tester = new RuleTester({ parser: path.resolve(".") });
 
+// NOTE: Some packages here are real NPM packages that when `fix` is run,
+// Are checked against the NPM registry.
 tester.run("controlled-versions", rule, {
   valid: [
     // not a package.json file
@@ -77,7 +80,7 @@ tester.run("controlled-versions", rule, {
   invalid: [
     // fixed without explicitly passing granularity
     {
-      code: `{
+      code: dedent`{
         "name": "p1",
         "dependencies": {
           "lodash": "~4.17.21",
@@ -99,10 +102,23 @@ tester.run("controlled-versions", rule, {
         { messageId: "nonControlledDependency", data: { package: "baz" } },
         { messageId: "nonControlledDependency", data: { package: "bay" } },
       ],
+      output: dedent`{
+        "name": "p1",
+        "dependencies": {
+          "lodash": "4.17.21",
+          "axios": "4.17.21",
+          "foo": "0.0.7",
+          "bar": "0.1.2",
+          "baz": "1.0.0",
+          "bay": "1.0.0",
+          "valid1": "1.2.3",
+          "valid2": "=1.2.3"
+        }
+      }`,
     },
     // fixed with explicitly passing granularity
     {
-      code: `{
+      code: dedent`{
         "name": "p1",
         "devDependencies": {
           "lodash": "~4.17.21",
@@ -125,10 +141,23 @@ tester.run("controlled-versions", rule, {
         { messageId: "nonControlledDependency", data: { package: "baz" } },
         { messageId: "nonControlledDependency", data: { package: "bay" } },
       ],
+      output: dedent`{
+        "name": "p1",
+        "devDependencies": {
+          "lodash": "4.17.21",
+          "axios": "4.17.21",
+          "foo": "0.0.7",
+          "bar": "0.1.2",
+          "baz": "1.0.0",
+          "bay": "1.0.0",
+          "valid1": "1.2.3",
+          "valid2": "=1.2.3"
+        }
+      }`,
     },
     // patch with explicitly passing granularity
     {
-      code: `{
+      code: dedent`{
         "name": "p1",
         "peerDependencies": {
           "axios": "^4.17.21",
@@ -150,10 +179,23 @@ tester.run("controlled-versions", rule, {
         { messageId: "nonControlledDependency", data: { package: "baz" } },
         { messageId: "nonControlledDependency", data: { package: "bay" } },
       ],
+      output: dedent`{
+        "name": "p1",
+        "peerDependencies": {
+          "axios": "~4.17.21",
+          "foo": "~0.0.7",
+          "bar": "~0.1.2",
+          "baz": "~1.0.0",
+          "bay": "~1.0.0",
+          "valid1": "1.2.3",
+          "valid2": "=1.2.3",
+          "valid3": "~1.3.4"
+        }
+      }`,
     },
     // minor with explicitly passing granularity
     {
-      code: `{
+      code: dedent`{
         "name": "p1",
         "optionalDependencies": {
           "foo": "latest",
@@ -174,6 +216,19 @@ tester.run("controlled-versions", rule, {
         { messageId: "nonControlledDependency", data: { package: "baz" } },
         { messageId: "nonControlledDependency", data: { package: "bay" } },
       ],
+      output: dedent`{
+        "name": "p1",
+        "optionalDependencies": {
+          "foo": "^0.0.7",
+          "bar": "^0.1.2",
+          "baz": "^1.0.0",
+          "bay": "^1.0.0",
+          "valid1": "1.2.3",
+          "valid2": "=1.2.3",
+          "valid3": "~1.3.4",
+          "valid4": "^1.3.4"
+        }
+      }`,
     },
   ],
 });

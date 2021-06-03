@@ -5,6 +5,7 @@ import { parse as parseSemver, clean as cleanSemver } from "semver";
 import { DEPENDENCIES_KEYS } from "./constants";
 import { Dependencies, DependencyGranularity } from "../types";
 import micromatch from "micromatch";
+import { toControlledSemver } from "../to-controlled-semver";
 
 const isFixedVersion = (version: string): boolean => {
   const cleanedSemver = cleanSemver(version);
@@ -20,6 +21,24 @@ const isPatchOrLess = (version: string): boolean =>
   isFixedVersion(version) || version.startsWith("~");
 const isMinorOrLess = (version: string): boolean =>
   isPatchOrLess(version) || version.startsWith("^");
+
+const fix = (
+  text: string,
+  key: string,
+  dependency: string,
+  version: string,
+  granularity: DependencyGranularity,
+  fixer: Rule.RuleFixer
+): Rule.Fix => {
+  const keyIndex = text.indexOf(`"${key}":`);
+  const packageIndex = text.indexOf(`"${dependency}":`, keyIndex);
+  const rangeStart = text.indexOf(`"${version}"`, packageIndex) + 1;
+  const rangeEnd = text.indexOf('"', rangeStart);
+
+  const fixedVersion = toControlledSemver(dependency, version, granularity);
+
+  return fixer.replaceTextRange([rangeStart, rangeEnd], fixedVersion);
+};
 
 interface RuleOptions {
   granularity?: DependencyGranularity;
@@ -38,6 +57,7 @@ const rule: Rule.RuleModule = {
       category: "Possible Errors",
       url: "https://github.com/idan-at/eslint-plugin-package-json-dependencies/blob/master/docs/rules/controlled-versions.md",
     },
+    fixable: "code",
     schema: [
       {
         type: "object",
@@ -96,6 +116,8 @@ const rule: Rule.RuleModule = {
                       data: {
                         package: dependency,
                       },
+                      fix: (fixer: Rule.RuleFixer) =>
+                        fix(text, key, dependency, version, granularity, fixer),
                     });
                   }
 
@@ -108,6 +130,8 @@ const rule: Rule.RuleModule = {
                       data: {
                         package: dependency,
                       },
+                      fix: (fixer: Rule.RuleFixer) =>
+                        fix(text, key, dependency, version, granularity, fixer),
                     });
                   }
 
@@ -120,6 +144,8 @@ const rule: Rule.RuleModule = {
                       data: {
                         package: dependency,
                       },
+                      fix: (fixer: Rule.RuleFixer) =>
+                        fix(text, key, dependency, version, granularity, fixer),
                     });
                   }
 
