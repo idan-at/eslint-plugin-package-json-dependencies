@@ -32,7 +32,7 @@ const resolveVersion = (packageName: string, semver: string): string => {
 
   if (semver === "*") {
     return getLatestVersion(packageName);
-  } else if (cleanSemver === cleanSemver) {
+  } else if (cleanSemver === semver) {
     // This means semver is a dist-tag
     return resolveDistTag(packageName, semver);
   }
