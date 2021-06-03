@@ -1,20 +1,28 @@
 import { isPackageJsonFile } from "../utils";
 import { Rule } from "eslint";
 import _ from "lodash";
-import { parse as parseSemver } from "semver";
+import { parse as parseSemver, clean as cleanSemver } from "semver";
 import { DEPENDENCIES_KEYS } from "./constants";
-import { Dependencies } from "../types";
+import { Dependencies, DependencyGranularity } from "../types";
 import micromatch from "micromatch";
 
-const isFixedVersion = (version: string): boolean =>
-  parseSemver(version) !== null;
+const isFixedVersion = (version: string): boolean => {
+  const cleanedSemver = cleanSemver(version);
+
+  if (cleanedSemver === null) {
+    return false;
+  }
+
+  return parseSemver(cleanedSemver) !== null;
+};
+
 const isPatchOrLess = (version: string): boolean =>
   isFixedVersion(version) || version.startsWith("~");
 const isMinorOrLess = (version: string): boolean =>
   isPatchOrLess(version) || version.startsWith("^");
 
 interface RuleOptions {
-  granularity?: "fixed" | "patch" | "minor";
+  granularity?: DependencyGranularity;
   excludePatterns: string[];
 }
 
@@ -36,6 +44,7 @@ const rule: Rule.RuleModule = {
         properties: {
           granularity: {
             type: "string",
+            // All options of DependencyGranularity
             enum: ["fixed", "patch", "minor"],
           },
           excludePatterns: {

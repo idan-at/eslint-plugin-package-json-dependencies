@@ -120,12 +120,12 @@ describe("integration tests", () => {
   });
 
   test("better-alternative", async () => {
-    const results = await createLiner(
-      BETTER_ALTERNATIVE_FIXTURES_PATH,
-      {
-        "package-json-dependencies/better-alternative": ["error", { alternatives: { 'foo': 'bar' }}],
-      }
-    ).lintFiles("package.json");
+    const results = await createLiner(BETTER_ALTERNATIVE_FIXTURES_PATH, {
+      "package-json-dependencies/better-alternative": [
+        "error",
+        { alternatives: { foo: "bar" } },
+      ],
+    }).lintFiles("package.json");
 
     expect(results).toHaveLength(1);
     expect(results[0]).toHaveProperty("errorCount", 1);
@@ -143,5 +143,5 @@ describe("integration tests", () => {
       "message",
       "Replace 'foo' with 'bar'"
     );
-  })
+  });
 });

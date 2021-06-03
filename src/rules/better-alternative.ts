@@ -11,7 +11,8 @@ const rule: Rule.RuleModule = {
   meta: {
     type: "problem",
     messages: {
-      betterAlternativeExists: "Replace '{{ package }}' with '{{ alternative }}'",
+      betterAlternativeExists:
+        "Replace '{{ package }}' with '{{ alternative }}'",
     },
     docs: {
       description: "prefer certain packages over others",
@@ -47,7 +48,7 @@ const rule: Rule.RuleModule = {
         const packageJson = JSON.parse(text);
 
         const { alternatives = {} } = (context.options[0] || {}) as RuleOptions;
-        const packagesToReplace = Object.keys(alternatives)
+        const packagesToReplace = Object.keys(alternatives);
 
         DEPENDENCIES_KEYS.forEach((key) => {
           const dependenciesList = getDependenciesSafe(packageJson, key);
@@ -59,7 +60,7 @@ const rule: Rule.RuleModule = {
                 messageId: "betterAlternativeExists",
                 data: {
                   package: dependency,
-                  alternative: alternatives[dependency]
+                  alternative: alternatives[dependency],
                 },
               });
             }

@@ -30,7 +30,7 @@ tester.run("better-alternative", rule, {
         }
       }`,
       filename: "package.json",
-      options: [{ alternatives: {} }]
+      options: [{ alternatives: {} }],
     },
     // alternatives are not listed as dependencies
     {
@@ -41,7 +41,7 @@ tester.run("better-alternative", rule, {
         }
       }`,
       filename: "package.json",
-      options: [{ alternatives: { 'foo': 'bar' }}]
+      options: [{ alternatives: { foo: "bar" } }],
     },
   ],
   invalid: [
@@ -54,8 +54,13 @@ tester.run("better-alternative", rule, {
         }
       }`,
       filename: "package.json",
-      options: [{ alternatives: { 'foo': 'bar' }}],
-      errors: [{ messageId: "betterAlternativeExists", data: { package: "foo", alternative: "bar" } }],
+      options: [{ alternatives: { foo: "bar" } }],
+      errors: [
+        {
+          messageId: "betterAlternativeExists",
+          data: { package: "foo", alternative: "bar" },
+        },
+      ],
     },
     // better alternative exists on devDependencies
     {
@@ -66,8 +71,13 @@ tester.run("better-alternative", rule, {
         }
       }`,
       filename: "package.json",
-      options: [{ alternatives: { 'foo': 'bar' }}],
-      errors: [{ messageId: "betterAlternativeExists", data: { package: "foo", alternative: "bar" } }],
+      options: [{ alternatives: { foo: "bar" } }],
+      errors: [
+        {
+          messageId: "betterAlternativeExists",
+          data: { package: "foo", alternative: "bar" },
+        },
+      ],
     },
     // better alternative exists on peerDependencies
     {
@@ -78,8 +88,13 @@ tester.run("better-alternative", rule, {
         }
       }`,
       filename: "package.json",
-      options: [{ alternatives: { 'foo': 'bar' }}],
-      errors: [{ messageId: "betterAlternativeExists", data: { package: "foo", alternative: "bar" } }],
+      options: [{ alternatives: { foo: "bar" } }],
+      errors: [
+        {
+          messageId: "betterAlternativeExists",
+          data: { package: "foo", alternative: "bar" },
+        },
+      ],
     },
     // better alternative exists on optionalDependencies
     {
@@ -90,8 +105,13 @@ tester.run("better-alternative", rule, {
         }
       }`,
       filename: "package.json",
-      options: [{ alternatives: { 'foo': 'bar' }}],
-      errors: [{ messageId: "betterAlternativeExists", data: { package: "foo", alternative: "bar" } }],
+      options: [{ alternatives: { foo: "bar" } }],
+      errors: [
+        {
+          messageId: "betterAlternativeExists",
+          data: { package: "foo", alternative: "bar" },
+        },
+      ],
     },
-  ]
+  ],
 });

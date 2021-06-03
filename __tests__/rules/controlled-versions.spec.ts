@@ -16,7 +16,8 @@ tester.run("controlled-versions", rule, {
       code: `{
         "name": "p1",
         "dependencies": {
-          "lodash": "4.17.21"
+          "lodash": "4.17.21",
+          "axios": "=1.2.3"
         }
       }`,
       filename: "package.json",
@@ -26,7 +27,8 @@ tester.run("controlled-versions", rule, {
       code: `{
         "name": "p1",
         "dependencies": {
-          "lodash": "4.17.21"
+          "lodash": "4.17.21",
+          "axios": "=1.2.3"
         }
       }`,
       filename: "package.json",
@@ -38,6 +40,7 @@ tester.run("controlled-versions", rule, {
         "name": "p1",
         "dependencies": {
           "axios": "4.17.21",
+          "foo": "=4.17.21",
           "lodash": "~4.17.21"
         }
       }`,
@@ -49,7 +52,8 @@ tester.run("controlled-versions", rule, {
       code: `{
         "name": "p1",
         "dependencies": {
-          "axios": "~4.17.21",
+          "axios": "4.17.21",
+          "bar": "=4.17.21",
           "lodash": "~4.17.21",
           "foo": "^4.17.21"
         }
@@ -79,7 +83,11 @@ tester.run("controlled-versions", rule, {
           "lodash": "~4.17.21",
           "axios": "^4.17.21",
           "foo": "latest",
-          "bar": "*"
+          "bar": "*",
+          "baz": ">1.0.0",
+          "bay": "<=1.0.0",
+          "valid1": "1.2.3",
+          "valid2": "=1.2.3"
         }
       }`,
       filename: "package.json",
@@ -88,6 +96,8 @@ tester.run("controlled-versions", rule, {
         { messageId: "nonControlledDependency", data: { package: "axios" } },
         { messageId: "nonControlledDependency", data: { package: "foo" } },
         { messageId: "nonControlledDependency", data: { package: "bar" } },
+        { messageId: "nonControlledDependency", data: { package: "baz" } },
+        { messageId: "nonControlledDependency", data: { package: "bay" } },
       ],
     },
     // fixed with explicitly passing granularity
@@ -98,7 +108,11 @@ tester.run("controlled-versions", rule, {
           "lodash": "~4.17.21",
           "axios": "^4.17.21",
           "foo": "latest",
-          "bar": "*"
+          "bar": "*",
+          "baz": ">1.0.0",
+          "bay": "<=1.0.0",
+          "valid1": "1.2.3",
+          "valid2": "=1.2.3"
         }
       }`,
       filename: "package.json",
@@ -108,6 +122,8 @@ tester.run("controlled-versions", rule, {
         { messageId: "nonControlledDependency", data: { package: "axios" } },
         { messageId: "nonControlledDependency", data: { package: "foo" } },
         { messageId: "nonControlledDependency", data: { package: "bar" } },
+        { messageId: "nonControlledDependency", data: { package: "baz" } },
+        { messageId: "nonControlledDependency", data: { package: "bay" } },
       ],
     },
     // patch with explicitly passing granularity
@@ -117,7 +133,12 @@ tester.run("controlled-versions", rule, {
         "peerDependencies": {
           "axios": "^4.17.21",
           "foo": "latest",
-          "bar": "*"
+          "bar": "*",
+          "baz": ">1.0.0",
+          "bay": "<=1.0.0",
+          "valid1": "1.2.3",
+          "valid2": "=1.2.3",
+          "valid3": "~1.3.4"
         }
       }`,
       filename: "package.json",
@@ -126,6 +147,8 @@ tester.run("controlled-versions", rule, {
         { messageId: "nonControlledDependency", data: { package: "axios" } },
         { messageId: "nonControlledDependency", data: { package: "foo" } },
         { messageId: "nonControlledDependency", data: { package: "bar" } },
+        { messageId: "nonControlledDependency", data: { package: "baz" } },
+        { messageId: "nonControlledDependency", data: { package: "bay" } },
       ],
     },
     // minor with explicitly passing granularity
@@ -134,7 +157,13 @@ tester.run("controlled-versions", rule, {
         "name": "p1",
         "optionalDependencies": {
           "foo": "latest",
-          "bar": "*"
+          "bar": "*",
+          "baz": ">1.0.0",
+          "bay": "<=1.0.0",
+          "valid1": "1.2.3",
+          "valid2": "=1.2.3",
+          "valid3": "~1.3.4",
+          "valid4": "^1.3.4"
         }
       }`,
       filename: "package.json",
@@ -142,6 +171,8 @@ tester.run("controlled-versions", rule, {
       errors: [
         { messageId: "nonControlledDependency", data: { package: "foo" } },
         { messageId: "nonControlledDependency", data: { package: "bar" } },
+        { messageId: "nonControlledDependency", data: { package: "baz" } },
+        { messageId: "nonControlledDependency", data: { package: "bay" } },
       ],
     },
   ],

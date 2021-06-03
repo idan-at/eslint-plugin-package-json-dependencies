@@ -4,4 +4,6 @@ interface Dependencies extends Dictionary<string> {
   [index: string]: string;
 }
 
-export { Dependencies };
+type DependencyGranularity = "fixed" | "patch" | "minor";
+
+export { Dependencies, DependencyGranularity };

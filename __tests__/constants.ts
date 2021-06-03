@@ -16,7 +16,7 @@ const CONTROLLED_VERSIONS_FIXTURE_PATH = path.join(
 const BETTER_ALTERNATIVE_FIXTURES_PATH = path.join(
   FIXTURES_ROOT_PATH,
   "better-alternative"
-)
+);
 
 export {
   FIXTURES_ROOT_PATH,
