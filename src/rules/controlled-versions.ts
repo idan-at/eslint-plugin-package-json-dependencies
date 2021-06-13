@@ -7,6 +7,9 @@ import { Dependencies, DependencyGranularity } from "../types";
 import micromatch from "micromatch";
 import { toControlledSemver } from "../to-controlled-semver";
 
+const isGitDependency = (version: string): boolean => version.startsWith("git");
+const isFileDependency = (version: string): boolean => version.startsWith("file");
+
 const isFixedVersion = (version: string): boolean => {
   const cleanedSemver = cleanSemver(version);
 
@@ -101,7 +104,8 @@ const rule: Rule.RuleModule = {
             .pickBy(
               (_, dependency) =>
                 micromatch([dependency], excludePatterns).length === 0
-            )
+          )
+            .omitBy((version) => isGitDependency(version!) || isFileDependency(version!))
             .forEach((version, dependency) => {
               if (!version) {
                 return;
