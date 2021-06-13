@@ -76,6 +76,33 @@ tester.run("controlled-versions", rule, {
       filename: "package.json",
       options: [{ granularity: "minor", excludePatterns: ["foo*"] }],
     },
+    // ignores git links
+    {
+      code: `{
+        "name": "p1",
+        "dependencies": {
+          "foo1": "git://github.com/foo/foo1.git",
+          "foo2": "git+ssh://git@github.com:foo/foo2.git",
+          "foo3": "git+http://user@github.com/foo/foo3",
+          "foo4": "git+https://user@github.com/foo/foo4",
+          "foo5": "git+file:///path/to/file"
+        }
+      }`,
+      filename: "package.json",
+      options: [{ granularity: "minor" }],
+    },
+    // ignores file links
+    {
+      code: `{
+        "name": "p1",
+        "dependencies": {
+          "foo1": "file:../relative/path/to/file",
+          "foo1": "file:/full/path/to/file"
+        }
+      }`,
+      filename: "package.json",
+      options: [{ granularity: "minor" }],
+    },
   ],
   invalid: [
     // fixed without explicitly passing granularity
