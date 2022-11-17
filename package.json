@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-package-json-dependencies",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "description": "A plugin for package json dependencies",
   "main": "dist",
   "scripts": {
@@ -26,7 +26,7 @@
     "json"
   ],
   "author": "Idan Attias",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@types/dedent": "~0.7.0",
     "@types/eslint": "~7.2.0",
