@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-package-json-dependencies",
-  "version": "1.0.15",
+  "version": "1.0.16",
   "description": "A plugin for package json dependencies",
   "main": "dist",
   "scripts": {
@@ -8,7 +8,8 @@
     "pretest": "npm run build",
     "test": "jest",
     "posttest": "npm run lint",
-    "lint": "eslint . --ext json"
+    "lint": "eslint . --ext json",
+    "prepublish": "if [ ! -d ./dist ]; then exit 1; fi"
   },
   "files": [
     "dist"
