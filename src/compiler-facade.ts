@@ -3,9 +3,24 @@ import path from "path";
 import fs from "fs";
 import { parse } from "comment-json";
 
+interface TsConfig {
+  compilerOptions: ts.CompilerOptions;
+}
+
 const fileExists = (fileName: string): boolean => ts.sys.fileExists(fileName);
 const readFile = (fileName: string): string | undefined =>
   ts.sys.readFile(fileName);
+const parseTsConfig = (content: string): TsConfig => {
+  try {
+    return parse(content) as unknown as TsConfig;
+  } catch(e) {
+    console.error('Failed to parse tsconfig');
+
+    return {
+      compilerOptions: {}
+    }
+  }
+}
 
 const resolveTypeRoots = (cwd: string): string[] => {
   const tsconfigPath = path.join(cwd, "tsconfig.json");
@@ -15,8 +30,8 @@ const resolveTypeRoots = (cwd: string): string[] => {
   }
 
   const content = fs.readFileSync(tsconfigPath, "utf8");
-  const tsconfig = parse(content);
-  const compilerOptions = tsconfig.compilerOptions as ts.CompilerOptions;
+  const tsconfig = parseTsConfig(content);
+  const compilerOptions = tsconfig.compilerOptions;
 
   if (compilerOptions.typeRoots) {
     return Array.from(
