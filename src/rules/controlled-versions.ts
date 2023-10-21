@@ -1,7 +1,7 @@
 import { isPackageJsonFile } from "../utils";
 import { Rule } from "eslint";
 import _ from "lodash";
-import { parse as parseSemver, clean as cleanSemver } from "semver";
+import { parse as parseSemver, clean as cleanSemver, coerce, valid as validSemver } from "semver";
 import { DEPENDENCIES_KEYS } from "./constants";
 import { Dependencies, DependencyGranularity } from "../types";
 import micromatch from "micromatch";
@@ -14,7 +14,7 @@ const isFixedVersion = (version: string): boolean => {
   const cleanedSemver = cleanSemver(version);
 
   if (cleanedSemver === null) {
-    return false;
+    return version.match(/^\d+$/) !== null;
   }
 
   return parseSemver(cleanedSemver) !== null;
@@ -29,18 +29,26 @@ const fix = (
   text: string,
   key: string,
   dependency: string,
-  version: string,
+  versions: string[],
+  isValid: (version: string) => boolean,
   granularity: DependencyGranularity,
   fixer: Rule.RuleFixer
 ): Rule.Fix => {
   const keyIndex = text.indexOf(`"${key}":`);
   const packageIndex = text.indexOf(`"${dependency}":`, keyIndex);
-  const rangeStart = text.indexOf(`"${version}"`, packageIndex) + 1;
-  const rangeEnd = text.indexOf('"', rangeStart);
+  const rangeStart = text.indexOf(`"${versions[0]}`, packageIndex) + 1;
+  const lastVersionStart = text.indexOf(`${versions[versions.length - 1]}`, packageIndex) + 1;
+  const rangeEnd = text.indexOf('"', lastVersionStart);
 
-  const fixedVersion = toControlledSemver(dependency, version, granularity);
+  let versionsString = text.substring(rangeStart, rangeEnd)
+  versions.forEach(version => {
+    if (!isValid(version)) {
+      const fixedVersion =  toControlledSemver(dependency, version, granularity)
+      versionsString = versionsString.replace(version, fixedVersion)
+    }
+  });
 
-  return fixer.replaceTextRange([rangeStart, rangeEnd], fixedVersion);
+  return fixer.replaceTextRange([rangeStart, rangeEnd], versionsString);
 };
 
 interface RuleOptions {
@@ -111,9 +119,11 @@ const rule: Rule.RuleModule = {
                 return;
               }
 
+              const versions = version.split(/\|\|| - /).map(s => s.trim());
+              
               switch (granularity) {
                 case "fixed":
-                  if (!isFixedVersion(version)) {
+                  if (versions.some(v => !isFixedVersion(v))) {
                     context.report({
                       node,
                       messageId: "nonControlledDependency",
@@ -121,13 +131,13 @@ const rule: Rule.RuleModule = {
                         package: dependency,
                       },
                       fix: (fixer: Rule.RuleFixer) =>
-                        fix(text, key, dependency, version, granularity, fixer),
+                        fix(text, key, dependency, versions, isFixedVersion, granularity, fixer),
                     });
                   }
 
                   break;
                 case "patch":
-                  if (!isPatchOrLess(version)) {
+                  if (versions.some(v => !isPatchOrLess(v))) {
                     context.report({
                       node,
                       messageId: "nonControlledDependency",
@@ -135,13 +145,13 @@ const rule: Rule.RuleModule = {
                         package: dependency,
                       },
                       fix: (fixer: Rule.RuleFixer) =>
-                        fix(text, key, dependency, version, granularity, fixer),
+                        fix(text, key, dependency, versions, isPatchOrLess, granularity, fixer),
                     });
                   }
 
                   break;
                 case "minor":
-                  if (!isMinorOrLess(version)) {
+                  if (versions.some(v => !isMinorOrLess(v))) {
                     context.report({
                       node,
                       messageId: "nonControlledDependency",
@@ -149,7 +159,7 @@ const rule: Rule.RuleModule = {
                         package: dependency,
                       },
                       fix: (fixer: Rule.RuleFixer) =>
-                        fix(text, key, dependency, version, granularity, fixer),
+                        fix(text, key, dependency, versions, isMinorOrLess, granularity, fixer),
                     });
                   }
 

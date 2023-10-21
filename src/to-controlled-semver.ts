@@ -46,7 +46,6 @@ const toControlledSemver = (
   granularity: DependencyGranularity
 ): string => {
   const resolvedSemver = resolveVersion(packageName, semver);
-
   switch (granularity) {
     case "fixed":
       return resolvedSemver;

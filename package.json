@@ -31,6 +31,7 @@
     "@types/dedent": "~0.7.0",
     "@types/eslint": "~8.4.10",
     "@types/esprima": "~4.0.0",
+    "@types/estree": "~1.0.3",
     "@types/jest": "~29.2.0",
     "@types/lodash": "~4.14.0",
     "@types/micromatch": "~4.0.0",

@@ -20,7 +20,9 @@ tester.run("controlled-versions", rule, {
         "name": "p1",
         "dependencies": {
           "lodash": "4.17.21",
-          "axios": "=1.2.3"
+          "axios": "=1.2.3",
+          "foo": "1.2.3 || 1.2.4",
+          "bar": "1 - 2"
         }
       }`,
       filename: "package.json",
@@ -31,7 +33,9 @@ tester.run("controlled-versions", rule, {
         "name": "p1",
         "dependencies": {
           "lodash": "4.17.21",
-          "axios": "=1.2.3"
+          "axios": "=1.2.3",
+          "foo": "1.2.3 || 1.2.4",
+          "bar": "1 - 2"
         }
       }`,
       filename: "package.json",
@@ -44,7 +48,11 @@ tester.run("controlled-versions", rule, {
         "dependencies": {
           "axios": "4.17.21",
           "foo": "=4.17.21",
-          "lodash": "~4.17.21"
+          "lodash": "~4.17.21",
+          "baz": "1.2.3 || 1.2.4",
+          "bay": "~1.2.3 || ~1.2.4",
+          "bar": "1 - 2",
+          "bak": "~1 - ~2"
         }
       }`,
       filename: "package.json",
@@ -58,13 +66,19 @@ tester.run("controlled-versions", rule, {
           "axios": "4.17.21",
           "bar": "=4.17.21",
           "lodash": "~4.17.21",
-          "foo": "^4.17.21"
+          "foo": "^4.17.21",
+          "baz": "1.2.3 || 1.2.4",
+          "bay": "~1.2.3 || ~1.2.4",
+          "bal": "^1.2.3 || ^1.2.4",
+          "bar": "1 - 2",
+          "bak": "~1 - ~2",
+          "bap": "^1 - ^2"
         }
       }`,
       filename: "package.json",
       options: [{ granularity: "minor" }],
     },
-    // excluded
+    // // excluded
     {
       code: `{
         "name": "p1",
@@ -76,7 +90,7 @@ tester.run("controlled-versions", rule, {
       filename: "package.json",
       options: [{ granularity: "minor", excludePatterns: ["foo*"] }],
     },
-    // ignores git links
+    // // ignores git links
     {
       code: `{
         "name": "p1",
@@ -91,13 +105,13 @@ tester.run("controlled-versions", rule, {
       filename: "package.json",
       options: [{ granularity: "minor" }],
     },
-    // ignores file links
+    // // ignores file links
     {
       code: `{
         "name": "p1",
         "dependencies": {
           "foo1": "file:../relative/path/to/file",
-          "foo1": "file:/full/path/to/file"
+          "foo2": "file:/full/path/to/file"
         }
       }`,
       filename: "package.json",
@@ -116,8 +130,11 @@ tester.run("controlled-versions", rule, {
           "bar": "*",
           "baz": ">1.0.0",
           "bay": "<=1.0.0",
+          "bak": "~1.2.3 || 1.2.4",
+          "bal": "1.2.3 - ^1.2.4",
           "valid1": "1.2.3",
-          "valid2": "=1.2.3"
+          "valid2": "=1.2.3",
+          "valid3": "14 - 16"
         }
       }`,
       filename: "package.json",
@@ -128,6 +145,8 @@ tester.run("controlled-versions", rule, {
         { messageId: "nonControlledDependency", data: { package: "bar" } },
         { messageId: "nonControlledDependency", data: { package: "baz" } },
         { messageId: "nonControlledDependency", data: { package: "bay" } },
+        { messageId: "nonControlledDependency", data: { package: "bak" } },
+        { messageId: "nonControlledDependency", data: { package: "bal" } },
       ],
       output: dedent`{
         "name": "p1",
@@ -138,12 +157,15 @@ tester.run("controlled-versions", rule, {
           "bar": "0.1.2",
           "baz": "1.0.0",
           "bay": "1.0.0",
+          "bak": "1.2.3 || 1.2.4",
+          "bal": "1.2.3 - 1.2.4",
           "valid1": "1.2.3",
-          "valid2": "=1.2.3"
+          "valid2": "=1.2.3",
+          "valid3": "14 - 16"
         }
       }`,
     },
-    // fixed with explicitly passing granularity
+    // // fixed with explicitly passing granularity
     {
       code: dedent`{
         "name": "p1",
@@ -154,8 +176,11 @@ tester.run("controlled-versions", rule, {
           "bar": "*",
           "baz": ">1.0.0",
           "bay": "<=1.0.0",
+          "bak": "~1.2.3 || 1.2.4",
+          "bal": "1.2.3 - ^1.2.4",
           "valid1": "1.2.3",
-          "valid2": "=1.2.3"
+          "valid2": "=1.2.3",
+          "valid3": "14 - 16"
         }
       }`,
       filename: "package.json",
@@ -167,6 +192,8 @@ tester.run("controlled-versions", rule, {
         { messageId: "nonControlledDependency", data: { package: "bar" } },
         { messageId: "nonControlledDependency", data: { package: "baz" } },
         { messageId: "nonControlledDependency", data: { package: "bay" } },
+        { messageId: "nonControlledDependency", data: { package: "bak" } },
+        { messageId: "nonControlledDependency", data: { package: "bal" } },
       ],
       output: dedent`{
         "name": "p1",
@@ -177,12 +204,15 @@ tester.run("controlled-versions", rule, {
           "bar": "0.1.2",
           "baz": "1.0.0",
           "bay": "1.0.0",
+          "bak": "1.2.3 || 1.2.4",
+          "bal": "1.2.3 - 1.2.4",
           "valid1": "1.2.3",
-          "valid2": "=1.2.3"
+          "valid2": "=1.2.3",
+          "valid3": "14 - 16"
         }
       }`,
     },
-    // patch with explicitly passing granularity
+    // // patch with explicitly passing granularity
     {
       code: dedent`{
         "name": "p1",
@@ -192,9 +222,12 @@ tester.run("controlled-versions", rule, {
           "bar": "*",
           "baz": ">1.0.0",
           "bay": "<=1.0.0",
+          "bak": "^1.2.3 || 1.2.4",
+          "bal": "1.2.3 - ^1.2.4",
           "valid1": "1.2.3",
           "valid2": "=1.2.3",
-          "valid3": "~1.3.4"
+          "valid3": "~1.3.4",
+          "valid4": "~14 - ~16"
         }
       }`,
       filename: "package.json",
@@ -205,6 +238,8 @@ tester.run("controlled-versions", rule, {
         { messageId: "nonControlledDependency", data: { package: "bar" } },
         { messageId: "nonControlledDependency", data: { package: "baz" } },
         { messageId: "nonControlledDependency", data: { package: "bay" } },
+        { messageId: "nonControlledDependency", data: { package: "bak" } },
+        { messageId: "nonControlledDependency", data: { package: "bal" } },
       ],
       output: dedent`{
         "name": "p1",
@@ -214,13 +249,16 @@ tester.run("controlled-versions", rule, {
           "bar": "~0.1.2",
           "baz": "~1.0.0",
           "bay": "~1.0.0",
+          "bak": "~1.2.3 || 1.2.4",
+          "bal": "1.2.3 - ~1.2.4",
           "valid1": "1.2.3",
           "valid2": "=1.2.3",
-          "valid3": "~1.3.4"
+          "valid3": "~1.3.4",
+          "valid4": "~14 - ~16"
         }
       }`,
     },
-    // minor with explicitly passing granularity
+    // // minor with explicitly passing granularity
     {
       code: dedent`{
         "name": "p1",
@@ -232,7 +270,8 @@ tester.run("controlled-versions", rule, {
           "valid1": "1.2.3",
           "valid2": "=1.2.3",
           "valid3": "~1.3.4",
-          "valid4": "^1.3.4"
+          "valid4": "^1.3.4",
+          "valid5": "^14 - ^16"
         }
       }`,
       filename: "package.json",
@@ -253,7 +292,8 @@ tester.run("controlled-versions", rule, {
           "valid1": "1.2.3",
           "valid2": "=1.2.3",
           "valid3": "~1.3.4",
-          "valid4": "^1.3.4"
+          "valid4": "^1.3.4",
+          "valid5": "^14 - ^16"
         }
       }`,
     },
