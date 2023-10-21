@@ -85,38 +85,28 @@ describe("integration tests", () => {
     const results = await createLiner(CONTROLLED_VERSIONS_FIXTURE_PATH, {
       "package-json-dependencies/controlled-versions": [
         "error",
-        { granularity: "patch", excludePatterns: ["ignored"] },
+        { granularity: { dependencies: "patch", devDepdendencies: "fixed" }, excludePatterns: ["ignored"] },
       ],
     }).lintFiles("package.json");
 
     expect(results).toHaveLength(1);
-    expect(results[0]).toHaveProperty("errorCount", 2);
+    expect(results[0]).toHaveProperty("errorCount", 5);
     expect(results[0]).toHaveProperty("warningCount", 0);
-    expect(results[0].messages).toHaveLength(2);
-    expect(results[0].messages[0]).toHaveProperty(
-      "ruleId",
-      "package-json-dependencies/controlled-versions"
-    );
-    expect(results[0].messages[0]).toHaveProperty(
-      "messageId",
-      "nonControlledDependency"
-    );
-    expect(results[0].messages[0]).toHaveProperty(
-      "message",
-      "Non controlled version found for dependency 'foo'"
-    );
-    expect(results[0].messages[1]).toHaveProperty(
-      "ruleId",
-      "package-json-dependencies/controlled-versions"
-    );
-    expect(results[0].messages[1]).toHaveProperty(
-      "messageId",
-      "nonControlledDependency"
-    );
-    expect(results[0].messages[1]).toHaveProperty(
-      "message",
-      "Non controlled version found for dependency 'bar'"
-    );
+    expect(results[0].messages).toHaveLength(5);
+    for (const [i, dependency] of ["foo", "bar", "baz", "bay", "bak"].entries()) {
+      expect(results[0].messages[i]).toHaveProperty(
+        "ruleId",
+        "package-json-dependencies/controlled-versions"
+      );
+      expect(results[0].messages[i]).toHaveProperty(
+        "messageId",
+        "nonControlledDependency"
+      );
+      expect(results[0].messages[i]).toHaveProperty(
+        "message",
+        `Non controlled version found for dependency '${dependency}'`
+      );
+    }
   });
 
   test("better-alternative", async () => {
