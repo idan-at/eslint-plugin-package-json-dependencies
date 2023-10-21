@@ -7,5 +7,14 @@
     "bar": "^4.17.0",
     "baz": "~4.17.0",
     "ignored": "latest"
+  },
+  "devDependencies": {
+    "baz": "~1.0.0"
+  },
+  "peerDependencies": {
+    "bay": "~1.2.3"
+  },
+  "optionalDependencies": {
+    "bak": "~1.2.3"
   }
 }

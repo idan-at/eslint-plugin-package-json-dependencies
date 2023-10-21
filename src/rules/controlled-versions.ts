@@ -1,11 +1,23 @@
 import { isPackageJsonFile } from "../utils";
 import { Rule } from "eslint";
 import _ from "lodash";
-import { parse as parseSemver, clean as cleanSemver, coerce, valid as validSemver } from "semver";
+import { parse as parseSemver, clean as cleanSemver } from "semver";
 import { DEPENDENCIES_KEYS } from "./constants";
-import { Dependencies, DependencyGranularity } from "../types";
+import { Dependencies, DependencyGranularity, GranularityOption } from "../types";
 import micromatch from "micromatch";
 import { toControlledSemver } from "../to-controlled-semver";
+
+const getGranularily = (key: typeof DEPENDENCIES_KEYS[number], granularity?: GranularityOption): DependencyGranularity => {
+  if (!granularity) {
+    return "fixed"
+  }
+
+  if (typeof granularity === 'string') {
+    return granularity
+  }
+  
+  return granularity[key] || "fixed"
+}
 
 const isGitDependency = (version: string): boolean => version.startsWith("git");
 const isFileDependency = (version: string): boolean => version.startsWith("file");
@@ -52,7 +64,7 @@ const fix = (
 };
 
 interface RuleOptions {
-  granularity?: DependencyGranularity;
+  granularity?: GranularityOption;
   excludePatterns: string[];
 }
 
@@ -74,9 +86,33 @@ const rule: Rule.RuleModule = {
         type: "object",
         properties: {
           granularity: {
-            type: "string",
-            // All options of DependencyGranularity
-            enum: ["fixed", "patch", "minor"],
+            anyOf: [
+              {
+                type: "string",
+                enum: ["fixed", "patch", "minor"],
+              },
+              {
+                type: 'object',
+                properties: {
+                  dependencies: {
+                    type: 'string',
+                    enum: ["fixed", "patch", "minor"],
+                  },
+                  devDependencies: {
+                    type: 'string',
+                    enum: ["fixed", "patch", "minor"],
+                  },
+                  peerDependencies: {
+                    type: 'string',
+                    enum: ["fixed", "patch", "minor"],
+                  },
+                  optionalDependencies: {
+                    type: 'string',
+                    enum: ["fixed", "patch", "minor"],
+                  },
+                }
+              }
+            ]
           },
           excludePatterns: {
             type: "array",
@@ -100,7 +136,7 @@ const rule: Rule.RuleModule = {
 
         const { text } = context.getSourceCode();
 
-        const { granularity = "fixed", excludePatterns = [] } = (context
+        const { granularity: maybeGranularity, excludePatterns = [] } = (context
           .options[0] || {}) as RuleOptions;
 
         const packageJson = JSON.parse(text);
@@ -120,7 +156,8 @@ const rule: Rule.RuleModule = {
               }
 
               const versions = version.split(/\|\|| - /).map(s => s.trim());
-              
+              const granularity = getGranularily(key, maybeGranularity)
+
               switch (granularity) {
                 case "fixed":
                   if (versions.some(v => !isFixedVersion(v))) {

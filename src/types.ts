@@ -6,4 +6,11 @@ interface Dependencies extends Dictionary<string> {
 
 type DependencyGranularity = "fixed" | "patch" | "minor";
 
-export { Dependencies, DependencyGranularity };
+type GranularityOption = DependencyGranularity | {
+  dependencies?: DependencyGranularity
+  devDependencies?: DependencyGranularity
+  peerDependencies?: DependencyGranularity
+  optionalDependencies?: DependencyGranularity
+}
+
+export { Dependencies, DependencyGranularity, GranularityOption };
