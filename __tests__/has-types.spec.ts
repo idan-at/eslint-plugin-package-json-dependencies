@@ -6,10 +6,10 @@ describe("hasTypes", () => {
     expect(hasTypes(cwd, "package", ["@types/package"])).toBe(true);
     expect(hasTypes(cwd, "package", ["@types/another-package"])).toBe(false);
     expect(hasTypes(cwd, "@scope/package", ["@types/scope__package"])).toBe(
-      true
+      true,
     );
     expect(
-      hasTypes(cwd, "@scope/package", ["@types/scope__another-package"])
+      hasTypes(cwd, "@scope/package", ["@types/scope__another-package"]),
     ).toBe(false);
   });
 

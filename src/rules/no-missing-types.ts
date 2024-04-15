@@ -60,11 +60,12 @@ const rule: Rule.RuleModule = {
           true: typesDependencies = [],
           false: allCodeDependencies = [],
         } = groupBy(dependencies, (dependency) =>
-          dependency.startsWith("@types/")
+          dependency.startsWith("@types/"),
         );
 
         const codeDependencies = allCodeDependencies.filter(
-          (dependency) => micromatch([dependency], excludePatterns).length === 0
+          (dependency) =>
+            micromatch([dependency], excludePatterns).length === 0,
         );
 
         for (const dependency of codeDependencies) {

@@ -5,6 +5,7 @@ import {
   ALPHABETICALLY_SORTED_DEPENDENCIES_FIXTURES_PATH,
   CONTROLLED_VERSIONS_FIXTURE_PATH,
   BETTER_ALTERNATIVE_FIXTURES_PATH,
+  VALID_VERSIONS_FIXTURES_PATH,
 } from "./constants";
 
 const createLiner = (cwd: string, rules: Partial<Linter.RulesRecord>): ESLint =>
@@ -29,7 +30,7 @@ describe("integration tests", () => {
   beforeAll(() =>
     execSync("npm install", {
       cwd: NO_MISSING_TYPES_FIXTURE_PATH,
-    })
+    }),
   );
 
   test("no-missing-types", async () => {
@@ -46,12 +47,12 @@ describe("integration tests", () => {
     expect(results[0].messages).toHaveLength(1);
     expect(results[0].messages[0]).toHaveProperty(
       "ruleId",
-      "package-json-dependencies/no-missing-types"
+      "package-json-dependencies/no-missing-types",
     );
     expect(results[0].messages[0]).toHaveProperty("messageId", "missingTypes");
     expect(results[0].messages[0]).toHaveProperty(
       "message",
-      "Missing types for streamifier"
+      "Missing types for streamifier",
     );
   });
 
@@ -60,7 +61,7 @@ describe("integration tests", () => {
       ALPHABETICALLY_SORTED_DEPENDENCIES_FIXTURES_PATH,
       {
         "package-json-dependencies/alphabetically-sorted-dependencies": "error",
-      }
+      },
     ).lintFiles("package.json");
 
     expect(results).toHaveLength(1);
@@ -69,15 +70,15 @@ describe("integration tests", () => {
     expect(results[0].messages).toHaveLength(1);
     expect(results[0].messages[0]).toHaveProperty(
       "ruleId",
-      "package-json-dependencies/alphabetically-sorted-dependencies"
+      "package-json-dependencies/alphabetically-sorted-dependencies",
     );
     expect(results[0].messages[0]).toHaveProperty(
       "messageId",
-      "unsortedDependencies"
+      "unsortedDependencies",
     );
     expect(results[0].messages[0]).toHaveProperty(
       "message",
-      "Dependencies under the 'dependencies' key are not alphabetically sorted"
+      "Dependencies under the 'dependencies' key are not alphabetically sorted",
     );
   });
 
@@ -85,7 +86,10 @@ describe("integration tests", () => {
     const results = await createLiner(CONTROLLED_VERSIONS_FIXTURE_PATH, {
       "package-json-dependencies/controlled-versions": [
         "error",
-        { granularity: { dependencies: "patch", devDepdendencies: "fixed" }, excludePatterns: ["ignored"] },
+        {
+          granularity: { dependencies: "patch", devDepdendencies: "fixed" },
+          excludePatterns: ["ignored"],
+        },
       ],
     }).lintFiles("package.json");
 
@@ -93,18 +97,24 @@ describe("integration tests", () => {
     expect(results[0]).toHaveProperty("errorCount", 5);
     expect(results[0]).toHaveProperty("warningCount", 0);
     expect(results[0].messages).toHaveLength(5);
-    for (const [i, dependency] of ["foo", "bar", "baz", "bay", "bak"].entries()) {
+    for (const [i, dependency] of [
+      "foo",
+      "bar",
+      "baz",
+      "bay",
+      "bak",
+    ].entries()) {
       expect(results[0].messages[i]).toHaveProperty(
         "ruleId",
-        "package-json-dependencies/controlled-versions"
+        "package-json-dependencies/controlled-versions",
       );
       expect(results[0].messages[i]).toHaveProperty(
         "messageId",
-        "nonControlledDependency"
+        "nonControlledDependency",
       );
       expect(results[0].messages[i]).toHaveProperty(
         "message",
-        `Non controlled version found for dependency '${dependency}'`
+        `Non controlled version found for dependency '${dependency}'`,
       );
     }
   });
@@ -123,15 +133,38 @@ describe("integration tests", () => {
     expect(results[0].messages).toHaveLength(1);
     expect(results[0].messages[0]).toHaveProperty(
       "ruleId",
-      "package-json-dependencies/better-alternative"
+      "package-json-dependencies/better-alternative",
     );
     expect(results[0].messages[0]).toHaveProperty(
       "messageId",
-      "betterAlternativeExists"
+      "betterAlternativeExists",
     );
     expect(results[0].messages[0]).toHaveProperty(
       "message",
-      "Replace 'foo' with 'bar'"
+      "Replace 'foo' with 'bar'",
+    );
+  });
+
+  test("valid-versions", async () => {
+    const results = await createLiner(VALID_VERSIONS_FIXTURES_PATH, {
+      "package-json-dependencies/valid-versions": ["error"],
+    }).lintFiles("package.json");
+
+    expect(results).toHaveLength(1);
+    expect(results[0]).toHaveProperty("errorCount", 1);
+    expect(results[0]).toHaveProperty("warningCount", 0);
+    expect(results[0].messages).toHaveLength(1);
+    expect(results[0].messages[0]).toHaveProperty(
+      "ruleId",
+      "package-json-dependencies/valid-versions",
+    );
+    expect(results[0].messages[0]).toHaveProperty(
+      "messageId",
+      "invalidVersionDetected",
+    );
+    expect(results[0].messages[0]).toHaveProperty(
+      "message",
+      "Invalid version found for dependency 'foo' (space detected after worksapce protocol)",
     );
   });
 });

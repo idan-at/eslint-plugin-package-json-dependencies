@@ -2,11 +2,11 @@ import { resolveModuleName } from "./compiler-facade";
 
 const hasTypesDependency = (
   dependency: string,
-  typesDependencies: string[]
+  typesDependencies: string[],
 ): boolean => {
   if (dependency.startsWith("@")) {
     return typesDependencies.includes(
-      `@types/${dependency.replace("@", "").replace("/", "__")}`
+      `@types/${dependency.replace("@", "").replace("/", "__")}`,
     );
   } else {
     return typesDependencies.includes(`@types/${dependency}`);
@@ -26,7 +26,7 @@ const hasPackedTypes = (cwd: string, dependency: string): boolean => {
 const hasTypes = (
   cwd: string,
   dependency: string,
-  typesDependencies: string[]
+  typesDependencies: string[],
 ): boolean =>
   hasTypesDependency(dependency, typesDependencies) ||
   hasPackedTypes(cwd, dependency);

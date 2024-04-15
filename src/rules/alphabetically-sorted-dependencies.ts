@@ -7,7 +7,7 @@ const isSorted = (list: string[]): boolean =>
   list.slice(1).every((item, i) => list[i] <= item);
 
 const sortObjectKeysAlphabetically = (
-  obj: Record<string, string>
+  obj: Record<string, string>,
 ): Record<string, string> => _(obj).toPairs().sortBy(0).fromPairs().value();
 
 const rule: Rule.RuleModule = {
@@ -57,7 +57,7 @@ const rule: Rule.RuleModule = {
                 const fixedSourceWithoutIndentation = JSON.stringify(
                   sortObjectKeysAlphabetically(packageJson[key]),
                   null,
-                  2
+                  2,
                 );
                 const fixedSource = fixedSourceWithoutIndentation
                   .split("\n")
@@ -66,7 +66,7 @@ const rule: Rule.RuleModule = {
 
                 return fixer.replaceTextRange(
                   [rangeStart, rangeEnd],
-                  fixedSource
+                  fixedSource,
                 );
               },
             });

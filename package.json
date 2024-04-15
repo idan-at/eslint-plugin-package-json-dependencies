@@ -8,7 +8,8 @@
     "pretest": "npm run build",
     "test": "jest",
     "posttest": "npm run lint",
-    "lint": "eslint . --ext json"
+    "lint": "eslint . --ext json",
+    "format": "npx prettier --write ."
   },
   "files": [
     "dist"

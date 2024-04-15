@@ -1,22 +1,11 @@
 import { DependencyGranularity } from "./types";
 import { execSync } from "child_process";
-
-function resolveDistTag(packageName: string, distTag: string): string {
-  try {
-    const stdout = execSync(
-      `npm view ${packageName} dist-tags --json`
-    ).toString();
-
-    return JSON.parse(stdout.trim())[distTag];
-  } catch (e) {
-    throw new Error(`package '${packageName}' does not exist`);
-  }
-}
+import { resolveDistTag } from "./utils";
 
 function getLatestVersion(packageName: string): string {
   try {
     const stdout = execSync(
-      `npm view ${packageName} version --json`
+      `npm view ${packageName} version --json`,
     ).toString();
 
     return JSON.parse(stdout.trim());
@@ -27,7 +16,10 @@ function getLatestVersion(packageName: string): string {
 
 const removeRange = (semver: string): string => semver.replace(/[~^>=<]+/, "");
 
-const resolveVersion = (packageName: string, semver: string): string => {
+const resolveVersion = (
+  packageName: string,
+  semver: string,
+): string | undefined => {
   const cleanSemver = removeRange(semver);
 
   if (semver === "*") {
@@ -43,9 +35,10 @@ const resolveVersion = (packageName: string, semver: string): string => {
 const toControlledSemver = (
   packageName: string,
   semver: string,
-  granularity: DependencyGranularity
+  granularity: DependencyGranularity,
 ): string => {
-  const resolvedSemver = resolveVersion(packageName, semver);
+  // TODO: fix
+  const resolvedSemver = resolveVersion(packageName, semver) || "";
   switch (granularity) {
     case "fixed":
       return resolvedSemver;

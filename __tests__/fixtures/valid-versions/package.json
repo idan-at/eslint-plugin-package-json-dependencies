@@ -1,0 +1,8 @@
+{
+  "name": "valid-versions",
+  "description": "valid-versions fixture",
+  "license": "ISC",
+  "dependencies": {
+    "foo": "workspace: *"
+  }
+}
