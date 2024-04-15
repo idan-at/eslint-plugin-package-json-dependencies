@@ -1,4 +1,12 @@
-import { isPackageJsonFile, getDependenciesSafe } from "../src/utils";
+import {
+  isPackageJsonFile,
+  getDependenciesSafe,
+  isGitDependency,
+  isFileDependency,
+  isWorkspaceDependency,
+  isDistTagDependency,
+  resolveDistTag,
+} from "../src/utils";
 
 describe("utils", () => {
   test("isPackageJsonFile", () => {
@@ -16,7 +24,37 @@ describe("utils", () => {
       "foo",
     ]);
     expect(getDependenciesSafe(packageJson, "devDependencies")).toStrictEqual(
-      []
+      [],
     );
+  });
+
+  test("isGitDependency", () => {
+    expect(
+      isGitDependency("git://github.com/user/project.git#commit-ish"),
+    ).toBeTruthy();
+    expect(isGitDependency("*")).toBeFalsy();
+  });
+
+  test("isFileDependency", () => {
+    expect(isFileDependency("file:../package")).toBeTruthy();
+    expect(isFileDependency("*")).toBeFalsy();
+  });
+
+  test("isWorkspaceDependency", () => {
+    expect(isWorkspaceDependency("workspace:*")).toBeTruthy();
+    expect(isWorkspaceDependency("*")).toBeFalsy();
+  });
+
+  test("isDistTagDependency", () => {
+    expect(isDistTagDependency("latest")).toBeTruthy();
+    expect(isDistTagDependency("*")).toBeFalsy();
+  });
+
+  test("resolveDistTag", () => {
+    expect(resolveDistTag("lodash", "latest2")).toBeUndefined();
+    expect(resolveDistTag("lodash", "latest")).toBeTruthy();
+    expect(() =>
+      resolveDistTag("no-way__this__package_exists3", "latest"),
+    ).toThrow(/does not exist/);
   });
 });

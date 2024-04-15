@@ -4,7 +4,7 @@ Makes sure every dependencies object (`dependencies` / `devDependencies` / `peer
 
 **NOTE**: This rule will alphabetically order your dependencies, if the `--fix` flag is passed to ESLint.
 
-__**Bad**__:
+\***\*Bad\*\***:
 
 ```json
 {
@@ -13,10 +13,9 @@ __**Bad**__:
     "axios": "~0.21.0"
   }
 }
+```
 
-````
-
-__**Good**__:
+\***\*Good\*\***:
 
 ```json
 {
@@ -25,5 +24,4 @@ __**Good**__:
     "lodash": "~4.17.0"
   }
 }
-
-````
+```

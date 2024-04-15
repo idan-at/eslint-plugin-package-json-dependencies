@@ -13,14 +13,14 @@ const readFile = (fileName: string): string | undefined =>
 const parseTsConfig = (content: string): TsConfig => {
   try {
     return parse(content) as unknown as TsConfig;
-  } catch(e) {
-    console.error('Failed to parse tsconfig');
+  } catch (e) {
+    console.error("Failed to parse tsconfig");
 
     return {
-      compilerOptions: {}
-    }
+      compilerOptions: {},
+    };
   }
-}
+};
 
 const resolveTypeRoots = (cwd: string): string[] => {
   const tsconfigPath = path.join(cwd, "tsconfig.json");
@@ -35,7 +35,7 @@ const resolveTypeRoots = (cwd: string): string[] => {
 
   if (compilerOptions.typeRoots) {
     return Array.from(
-      compilerOptions.typeRoots.map((typeRoot) => path.resolve(cwd, typeRoot))
+      compilerOptions.typeRoots.map((typeRoot) => path.resolve(cwd, typeRoot)),
     );
   }
 
@@ -52,7 +52,7 @@ const resolveModuleName = (cwd: string, moduleName: string): string | null => {
     moduleName,
     fileInsideCwd,
     {},
-    { fileExists, readFile }
+    { fileExists, readFile },
   );
 
   if (!resolvedModule) {

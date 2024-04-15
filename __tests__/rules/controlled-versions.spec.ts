@@ -78,7 +78,7 @@ tester.run("controlled-versions", rule, {
       filename: "package.json",
       options: [{ granularity: "minor" }],
     },
-    // // excluded
+    // excluded
     {
       code: `{
         "name": "p1",
@@ -90,7 +90,7 @@ tester.run("controlled-versions", rule, {
       filename: "package.json",
       options: [{ granularity: "minor", excludePatterns: ["foo*"] }],
     },
-    // // ignores git links
+    // ignores git links
     {
       code: `{
         "name": "p1",
@@ -105,7 +105,7 @@ tester.run("controlled-versions", rule, {
       filename: "package.json",
       options: [{ granularity: "minor" }],
     },
-    // // ignores file links
+    // ignores file links
     {
       code: `{
         "name": "p1",
@@ -165,7 +165,7 @@ tester.run("controlled-versions", rule, {
         }
       }`,
     },
-    // // fixed with explicitly passing granularity
+    // fixed with explicitly passing granularity
     {
       code: dedent`{
         "name": "p1",
@@ -212,7 +212,7 @@ tester.run("controlled-versions", rule, {
         }
       }`,
     },
-    // // patch with explicitly passing granularity
+    // patch with explicitly passing granularity
     {
       code: dedent`{
         "name": "p1",
@@ -258,7 +258,7 @@ tester.run("controlled-versions", rule, {
         }
       }`,
     },
-    // // minor with explicitly passing granularity
+    // minor with explicitly passing granularity
     {
       code: dedent`{
         "name": "p1",

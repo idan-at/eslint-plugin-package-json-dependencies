@@ -3,19 +3,23 @@ import path from "path";
 const FIXTURES_ROOT_PATH = path.resolve("./__tests__/fixtures");
 const NO_MISSING_TYPES_FIXTURE_PATH = path.join(
   FIXTURES_ROOT_PATH,
-  "no-missing-types"
+  "no-missing-types",
 );
 const ALPHABETICALLY_SORTED_DEPENDENCIES_FIXTURES_PATH = path.join(
   FIXTURES_ROOT_PATH,
-  "alphabetically-sorted-dependencies"
+  "alphabetically-sorted-dependencies",
 );
 const CONTROLLED_VERSIONS_FIXTURE_PATH = path.join(
   FIXTURES_ROOT_PATH,
-  "controlled-versions"
+  "controlled-versions",
 );
 const BETTER_ALTERNATIVE_FIXTURES_PATH = path.join(
   FIXTURES_ROOT_PATH,
-  "better-alternative"
+  "better-alternative",
+);
+const VALID_VERSIONS_FIXTURES_PATH = path.join(
+  FIXTURES_ROOT_PATH,
+  "valid-versions",
 );
 
 export {
@@ -24,4 +28,5 @@ export {
   ALPHABETICALLY_SORTED_DEPENDENCIES_FIXTURES_PATH,
   CONTROLLED_VERSIONS_FIXTURE_PATH,
   BETTER_ALTERNATIVE_FIXTURES_PATH,
+  VALID_VERSIONS_FIXTURES_PATH,
 };
