@@ -37,7 +37,6 @@ const toControlledSemver = (
   semver: string,
   granularity: DependencyGranularity,
 ): string => {
-  // TODO: fix
   const resolvedSemver = resolveVersion(packageName, semver) || "";
   switch (granularity) {
     case "fixed":

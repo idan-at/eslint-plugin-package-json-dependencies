@@ -61,7 +61,7 @@ tester.run("valid-versions", rule, {
     }`,
       filename: "package.json",
     },
-    // valid version - dist-tag
+    // valid version - workspace dependency
     {
       code: `{
       "name": "p1",
