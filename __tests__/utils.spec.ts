@@ -51,10 +51,12 @@ describe("utils", () => {
   });
 
   test("resolveDistTag", () => {
-    expect(resolveDistTag("lodash", "latest2")).toBeUndefined();
     expect(resolveDistTag("lodash", "latest")).toBeTruthy();
     expect(() =>
       resolveDistTag("no-way__this__package_exists3", "latest"),
     ).toThrow(/does not exist/);
+    expect(() => resolveDistTag("lodash", "latest2")).toThrow(
+      /not found for package/,
+    );
   });
 });

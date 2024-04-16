@@ -20,17 +20,25 @@ const isFileDependency = (version: string): boolean =>
 const isWorkspaceDependency = (version: string): boolean =>
   version.startsWith("workspace");
 
-function resolveDistTag(
-  packageName: string,
-  distTag: string,
-): string | undefined {
+function resolveDistTag(packageName: string, distTag: string): string {
   try {
     const stdout = execSync(
       `npm view ${packageName} dist-tags --json`,
     ).toString();
 
-    return JSON.parse(stdout.trim())[distTag];
+    const tag = JSON.parse(stdout.trim())[distTag];
+    if (tag == undefined) {
+      throw new Error(
+        `tag '${distTag}' not found for package '${packageName}'`,
+      );
+    }
+
+    return tag;
   } catch (e) {
+    if (e.message.includes("not found for package")) {
+      throw e;
+    }
+
     throw new Error(`package '${packageName}' does not exist`);
   }
 }

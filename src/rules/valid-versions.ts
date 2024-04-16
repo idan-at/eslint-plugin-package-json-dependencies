@@ -50,16 +50,9 @@ const rule: Rule.RuleModule = {
           version: string,
         ) => {
           if (isDistTagDependency(version)) {
-            let validDistTag = true;
-
             try {
-              const resolvedVersion = resolveDistTag(dependency, version);
-              validDistTag = !!resolvedVersion;
+              resolveDistTag(dependency, version);
             } catch {
-              validDistTag = false;
-            }
-
-            if (!validDistTag) {
               context.report({
                 node,
                 messageId: "invalidVersionDetected",
