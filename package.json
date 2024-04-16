@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-package-json-dependencies",
-  "version": "1.0.19",
+  "version": "1.0.20",
   "description": "A plugin for package json dependencies",
   "main": "dist",
   "scripts": {
