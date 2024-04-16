@@ -46,6 +46,7 @@ npm install --save-dev eslint eslint-plugin-package-json-dependencies
 - [controlled-versions](https://github.com/idan-at/eslint-plugin-package-json-dependencies/blob/master/docs/rules/controlled-versions.md)
 - [better-alternative](https://github.com/idan-at/eslint-plugin-package-json-dependencies/blob/master/docs/rules/better-alternative.md)
 - [valid-versions](https://github.com/idan-at/eslint-plugin-package-json-dependencies/blob/master/docs/rules/valid-versions.md)
+- [duplicate-dependencies](https://github.com/idan-at/eslint-plugin-package-json-dependencies/blob/master/docs/rules/duplicate-dependencies.md)
 
 # Development
 

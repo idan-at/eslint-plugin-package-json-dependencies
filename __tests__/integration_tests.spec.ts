@@ -6,6 +6,7 @@ import {
   CONTROLLED_VERSIONS_FIXTURE_PATH,
   BETTER_ALTERNATIVE_FIXTURES_PATH,
   VALID_VERSIONS_FIXTURES_PATH,
+  DUPLICATE_DEPENDENCIES_FIXTURES_PATH,
 } from "./constants";
 
 const createLiner = (cwd: string, rules: Partial<Linter.RulesRecord>): ESLint =>
@@ -165,6 +166,32 @@ describe("integration tests", () => {
     expect(results[0].messages[0]).toHaveProperty(
       "message",
       "Invalid version found for dependency 'foo' (space detected after worksapce protocol)",
+    );
+  });
+
+  test("duplicate-dependencies", async () => {
+    const results = await createLiner(DUPLICATE_DEPENDENCIES_FIXTURES_PATH, {
+      "package-json-dependencies/duplicate-dependencies": [
+        "error",
+        { exclude: ["ignored"] },
+      ],
+    }).lintFiles("package.json");
+
+    expect(results).toHaveLength(1);
+    expect(results[0]).toHaveProperty("errorCount", 1);
+    expect(results[0]).toHaveProperty("warningCount", 0);
+    expect(results[0].messages).toHaveLength(1);
+    expect(results[0].messages[0]).toHaveProperty(
+      "ruleId",
+      "package-json-dependencies/duplicate-dependencies",
+    );
+    expect(results[0].messages[0]).toHaveProperty(
+      "messageId",
+      "duplicateDependencyFound",
+    );
+    expect(results[0].messages[0]).toHaveProperty(
+      "message",
+      "dependency 'foo' declared multiple times ([dependencies,devDependencies])",
     );
   });
 });

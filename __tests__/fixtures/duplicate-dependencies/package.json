@@ -1,0 +1,13 @@
+{
+  "name": "duplicate-dependencies",
+  "description": "duplicate-dependencies fixture",
+  "license": "ISC",
+  "dependencies": {
+    "foo": "1.0.0",
+    "ignored": "1.0.0"
+  },
+  "devDependencies": {
+    "foo": "1.0.0",
+    "ignored": "1.0.0"
+  }
+}

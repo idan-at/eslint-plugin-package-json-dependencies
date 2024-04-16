@@ -3,6 +3,7 @@ import { rule as alphabeticallySortedDependencies } from "./alphabetically-sorte
 import { rule as controlledVersions } from "./controlled-versions";
 import { rule as betterAlternative } from "./better-alternative";
 import { rule as validVersions } from "./valid-versions";
+import { rule as duplicateDependencies } from "./duplicate-dependencies";
 
 const rules = {
   "no-missing-types": noMissingTypes,
@@ -10,6 +11,7 @@ const rules = {
   "controlled-versions": controlledVersions,
   "better-alternative": betterAlternative,
   "valid-versions": validVersions,
+  "duplicate-dependencies": duplicateDependencies,
 };
 
 export { rules };
